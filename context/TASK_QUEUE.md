@@ -53,7 +53,7 @@
 - 비고: 하네스 생성 작업에서 반영함.
 
 - ID: TASK-005
-- 상태: TODO
+- 상태: DONE
 - 우선순위: P2
 - 작업 목표: 자율 루프 하네스 자체 리뷰
 - 수정 허용 파일: `context/TASK_QUEUE.md`, `context/DECISION_LOG.md`, `context/current-focus.md`, `context/HANDOFF.md`
