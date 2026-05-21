@@ -17,6 +17,18 @@
 4. 생성된 문서에 실제 제품명, 저장소명, 검증 명령, 금지 파일을 채운다.
 5. 첫 기능 구현은 별도 작업 큐 항목으로 분리한다.
 
+## 보조 스크립트
+
+`scripts/init-mvp-repo.bat`는 이미 존재하는 MVP 저장소 경로를 받아 초기 문서 구조를 준비하는 초안 스크립트다. 기본값은 dry-run이며, 실제 파일을 쓰려면 `APPLY=1`을 지정한다.
+
+```bat
+scripts\init-mvp-repo.bat C:\dev\my-mvp
+set APPLY=1
+scripts\init-mvp-repo.bat C:\dev\my-mvp
+```
+
+이 스크립트는 대상 저장소를 만들지 않고, OpenClaw 실행, 서비스 코드 생성, git commit, git push를 수행하지 않는다. 대상 경로 안에 `.env`가 있으면 중단한다. 기존 `AGENTS.md`와 `codex/*.AGENTS.md`가 있으면 덮어쓰지 않고 건너뛴다.
+
 ## 필수 산출물
 
 - `AGENTS.md`: 저장소 목적, 허용/금지 작업, 보안 경계, 검증 원칙

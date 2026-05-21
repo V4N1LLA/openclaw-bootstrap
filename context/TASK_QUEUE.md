@@ -135,7 +135,7 @@
 - 비고: MVP repo 초기화 문서와 Codex 프롬프트 초안 준비 완료.
 
 - ID: TASK-011
-- 상태: TODO
+- 상태: DONE
 - 우선순위: P2
 - 추천 effort: medium
 - 작업 목표: 하네스를 실제 MVP repo에 적용하는 bootstrap 스크립트 초안을 작성한다.
@@ -145,4 +145,4 @@
 - 완료 조건: 대상 repo 경로를 받아 AGENTS/context/docs 템플릿을 복사하는 초안 스크립트가 준비됨
 - 검증 명령: `git diff --stat`
 - 예상 토큰 등급: M
-- 비고: 실제 실행 전 dry-run 중심으로 작성한다.
+- 비고: `scripts/init-mvp-repo.bat` 초안 추가. 기본 dry-run이며 `APPLY=1`일 때만 기존 대상 repo에 문서 구조를 준비한다.
