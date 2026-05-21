@@ -2,12 +2,13 @@
 
 <!-- 80줄 이하로 유지한다. token, secret, password를 적지 않는다. -->
 
-- 현재 목표: TASK_QUEUE에 reasoning effort 라우팅 하네스 작업 추가 완료
-- 완료한 것: `TASK-006`, `TASK-007`, `TASK-008`을 TODO로 추가하고 각 작업의 허용 파일, 읽기 범위, 금지사항, 완료 조건, 검증 명령을 기록함.
+- 현재 목표: TASK-006 reasoning effort 라우팅 정책과 프로필 템플릿 확인 완료
+- 완료한 것: `docs/CODEX-EFFORT-ROUTING.md`에 low/medium/high/xhigh 기준과 xhigh 기본값 금지 규칙이 있음을 확인함.
+- 완료한 것: `codex/profiles/low.md`, `medium.md`, `high.md`, `xhigh.md` 프로필 템플릿이 있음을 확인함.
 - 수정한 파일: `context/TASK_QUEUE.md`, `context/current-focus.md`, `context/HANDOFF.md`
-- 확인한 사실: 다음 자동 루프에서 실행 가능한 TODO가 생겼으며 첫 후보는 P1 `TASK-006`임.
+- 확인한 사실: 다음 TODO 후보는 P1 `TASK-007`임.
 - 실패한 시도: 없음
-- 남은 문제: 기존 DONE 작업에는 아직 `추천 effort` 필드가 없으며, 이는 `TASK-008`에서 점검 예정
-- 다음 한 단계: `TASK-006`에서 reasoning effort 라우팅 정책 문서와 profiles 템플릿 추가
-- 검증 상태: 통과 - `Select-String -LiteralPath context/TASK_QUEUE.md -Pattern "TASK-006|TASK-007|TASK-008"`
-- 추천 커밋 메시지: `:memo: docs: reasoning effort 라우팅 작업 큐를 추가한다`
+- 남은 문제: `TASK-007`, `TASK-008`이 남아 있음
+- 다음 한 단계: `TASK-007`에서 effort 라우터 프롬프트와 실행 스크립트 추가
+- 검증 상태: 대기 - `git diff --stat`
+- 추천 커밋 메시지: `:memo: docs: reasoning effort 라우팅 작업을 완료한다`

@@ -65,7 +65,7 @@
 - 비고: 다음 자동 루프 실행 후보.
 
 - ID: TASK-006
-- 상태: TODO
+- 상태: DONE
 - 우선순위: P1
 - 추천 effort: medium
 - 작업 목표: Codex reasoning effort 라우팅 정책 문서와 profiles 템플릿을 추가한다.
@@ -75,7 +75,7 @@
 - 완료 조건: low/medium/high/xhigh 사용 기준이 문서화됨, xhigh를 기본값으로 사용하지 말라는 규칙이 포함됨
 - 검증 명령: `git diff --stat`
 - 예상 토큰 등급: M
-- 비고: 기본은 medium, 단순 작업은 low, 복잡/보안 작업은 high/xhigh로 분류한다.
+- 비고: reasoning effort 정책 문서와 low/medium/high/xhigh 프로필 템플릿 확인 완료.
 
 - ID: TASK-007
 - 상태: TODO
