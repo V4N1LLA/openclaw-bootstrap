@@ -7,3 +7,9 @@ logs/
 node_modules/
 .openclaw-local/
 .codex-context/
+.openclaw/
+HEARTBEAT.md
+IDENTITY.md
+SOUL.md
+TOOLS.md
+USER.md
