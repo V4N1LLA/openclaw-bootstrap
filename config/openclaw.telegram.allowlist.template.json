@@ -1,0 +1,15 @@
+{
+  "integrations": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "TELEGRAM_BOT_TOKEN은_사용자_프로필_설정에만_저장",
+      "dmPolicy": "allowlist",
+      "allowlist": [
+        "123456789"
+      ],
+      "pairing": {
+        "enabled": false
+      }
+    }
+  }
+}

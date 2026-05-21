@@ -1,0 +1,30 @@
+# Codex가 일반적으로 읽지 말아야 할 패턴
+# lock 파일은 의존성 충돌 분석이 목표일 때만 사용자가 명시적으로 허용할 수 있다.
+
+node_modules/
+dist/
+build/
+coverage/
+.cache/
+.next/
+out/
+target/
+logs/
+*.log
+*.db
+*.sqlite
+.env
+.env.*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+gradle.lockfile
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.mp4
+*.zip
+*.tar
+*.gz

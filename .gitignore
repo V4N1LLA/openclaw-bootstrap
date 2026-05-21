@@ -1,0 +1,9 @@
+.env
+*.env
+openclaw.env
+token.txt
+secrets/
+logs/
+node_modules/
+.openclaw-local/
+.codex-context/
