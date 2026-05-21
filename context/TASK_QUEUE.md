@@ -7,6 +7,7 @@
 - ID: TASK-001
 - 상태: DONE
 - 우선순위: P0
+- 추천 effort: low
 - 작업 목표: 루트 `AGENTS.md` 기준으로 자율 작업 루프 규칙 보완
 - 수정 허용 파일: `AGENTS.md`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
 - 읽어도 되는 파일: `AGENTS.md`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
@@ -19,6 +20,7 @@
 - ID: TASK-002
 - 상태: DONE
 - 우선순위: P0
+- 추천 effort: low
 - 작업 목표: `codex-run-next.bat` 작성
 - 수정 허용 파일: `scripts/codex-run-next.bat`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
 - 읽어도 되는 파일: `scripts/collect-min-context.bat`, `prompts/agent-loop/00-run-next-task.md`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
@@ -31,6 +33,7 @@
 - ID: TASK-003
 - 상태: DONE
 - 우선순위: P1
+- 추천 effort: low
 - 작업 목표: `codex-agent-loop.bat` 작성
 - 수정 허용 파일: `scripts/codex-agent-loop.bat`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
 - 읽어도 되는 파일: `scripts/codex-run-next.bat`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
@@ -43,6 +46,7 @@
 - ID: TASK-004
 - 상태: DONE
 - 우선순위: P1
+- 추천 effort: medium
 - 작업 목표: `CODEX-AUTONOMOUS-LOOP.md` 작성
 - 수정 허용 파일: `docs/CODEX-AUTONOMOUS-LOOP.md`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
 - 읽어도 되는 파일: `docs/CODEX-TOKEN-STRATEGY.md`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
@@ -55,6 +59,7 @@
 - ID: TASK-005
 - 상태: DONE
 - 우선순위: P2
+- 추천 effort: medium
 - 작업 목표: 자율 루프 하네스 자체 리뷰
 - 수정 허용 파일: `context/TASK_QUEUE.md`, `context/DECISION_LOG.md`, `context/current-focus.md`, `context/HANDOFF.md`
 - 읽어도 되는 파일: `AGENTS.md`, `context/TASK_QUEUE.md`, `context/DECISION_LOG.md`, `context/current-focus.md`, `context/HANDOFF.md`, `docs/CODEX-AUTONOMOUS-LOOP.md`, `scripts/codex-run-next.bat`, `scripts/codex-agent-loop.bat`, `prompts/agent-loop/`
@@ -91,7 +96,7 @@
 - 비고: 저장소 루트에서 산출물 존재, xhigh 경고 문구, `git diff --stat` 재검증 완료.
 
 - ID: TASK-008
-- 상태: TODO
+- 상태: DONE
 - 우선순위: P2
 - 추천 effort: low
 - 작업 목표: TASK_QUEUE 작업 형식에 추천 effort 필드가 일관되게 들어갔는지 리뷰한다.
@@ -101,7 +106,7 @@
 - 완료 조건: 모든 TODO/DONE 작업에 추천 effort 필드가 있거나 예외가 명시됨
 - 검증 명령: `git diff --stat`
 - 예상 토큰 등급: S
-- 비고: 문서 일관성 점검 작업이다.
+- 비고: TASK-001~TASK-005에 추천 effort 필드를 추가해 모든 TODO/DONE 작업 형식을 일관화함.
 
 - ID: TASK-009
 - 상태: DONE
