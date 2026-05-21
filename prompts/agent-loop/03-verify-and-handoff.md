@@ -12,3 +12,7 @@
 6. `context/HANDOFF.md`는 80줄 이하로 갱신한다.
 7. `context/HANDOFF.md`에는 현재 목표, 완료한 것, 수정한 파일, 확인한 사실, 실패한 시도, 남은 문제, 다음 한 단계, 검증 상태, 추천 커밋 메시지만 적는다.
 8. 출력은 40줄 이하로 한다.
+
+## 운영 메타 파일 예외
+
+`context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`는 검증과 인계 상태 갱신을 위해 모든 작업에서 수정할 수 있다. 실제 산출물 파일은 선택 작업의 `수정 허용 파일` 안에서만 수정한다.

@@ -13,6 +13,12 @@
 7. 선택한 작업의 `읽어도 되는 파일` 밖은 읽지 않는다.
 8. token, secret, password, `.env`, `.env.*`, `secrets/`, `logs/`는 읽거나 출력하지 않는다.
 
+## 운영 메타 파일 예외
+
+- `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`는 자율 루프 운영 메타 파일이다.
+- 이 3개 파일은 선택된 TASK의 `수정 허용 파일`에 명시되어 있지 않아도 루프 상태 갱신을 위해 수정할 수 있다.
+- 단, 실제 산출물 파일은 반드시 선택된 TASK의 `수정 허용 파일` 안에서만 수정한다.
+
 ## 실행 규칙
 
 1. 작업 전 `context/current-focus.md`를 선택한 작업 기준으로 갱신한다.

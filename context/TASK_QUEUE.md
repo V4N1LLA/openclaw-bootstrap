@@ -108,7 +108,7 @@
 - 우선순위: P1
 - 추천 effort: low
 - 작업 목표: 하네스 v0.1 완료 기준을 문서화한다.
-- 수정 허용 파일: `docs/CODEX-AUTONOMOUS-LOOP.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
+- 수정 허용 파일: `docs/CODEX-AUTONOMOUS-LOOP.md`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
 - 읽어도 되는 파일: `docs/CODEX-AUTONOMOUS-LOOP.md`, `context/TASK_QUEUE.md`, `context/HANDOFF.md`
 - 금지사항: 실제 서비스 코드 생성 금지, OpenClaw 실행 금지, git commit/push 금지
 - 완료 조건: 하네스 v0.1 완료 기준과 MVP repo 전환 조건이 문서화됨
@@ -121,7 +121,7 @@
 - 우선순위: P1
 - 추천 effort: medium
 - 작업 목표: 실제 MVP 서비스 repo 초기화 프롬프트와 템플릿을 작성한다.
-- 수정 허용 파일: `prompts/mvp/`, `docs/MVP-BOOTSTRAP.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
+- 수정 허용 파일: `prompts/mvp/`, `docs/MVP-BOOTSTRAP.md`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
 - 읽어도 되는 파일: `docs/CODEX-AUTONOMOUS-LOOP.md`, `docs/CODEX-TOKEN-STRATEGY.md`, `templates/README.md`, `templates/PRODUCT.md`
 - 금지사항: 실제 서비스 repo 생성 금지, 실제 서비스 코드 생성 금지, git commit/push 금지
 - 완료 조건: MVP repo 초기화에 사용할 Codex 프롬프트와 문서 템플릿이 준비됨
@@ -134,7 +134,7 @@
 - 우선순위: P2
 - 추천 effort: medium
 - 작업 목표: 하네스를 실제 MVP repo에 적용하는 bootstrap 스크립트 초안을 작성한다.
-- 수정 허용 파일: `scripts/init-mvp-repo.bat`, `docs/MVP-BOOTSTRAP.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
+- 수정 허용 파일: `scripts/init-mvp-repo.bat`, `docs/MVP-BOOTSTRAP.md`, `context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`
 - 읽어도 되는 파일: `scripts/sync-agents.bat`, `templates/`, `codex/`
 - 금지사항: 실제 서비스 repo 생성 금지, OpenClaw 실행 금지, git commit/push 금지
 - 완료 조건: 대상 repo 경로를 받아 AGENTS/context/docs 템플릿을 복사하는 초안 스크립트가 준비됨

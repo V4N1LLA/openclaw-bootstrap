@@ -14,6 +14,10 @@
 8. token, secret, password, `.env`, `.env.*`, `secrets/`, `logs/`는 읽거나 출력하지 않는다.
 9. 작업 범위가 커지면 즉시 멈추고 `BLOCKED`로 바꾼다.
 
+## 운영 메타 파일 예외
+
+`context/current-focus.md`, `context/HANDOFF.md`, `context/TASK_QUEUE.md`는 루프 상태 갱신을 위해 모든 작업에서 수정할 수 있다. 실제 산출물 파일은 선택 작업의 `수정 허용 파일` 안에서만 수정한다.
+
 ## 완료 전 확인
 
 - 수정한 파일이 허용 범위 안인지 확인한다.

@@ -2,10 +2,10 @@
 
 <!-- 80줄 이하로 유지한다. token, secret, password를 적지 않는다. -->
 
-- 현재 목표: ChatGPT 의존도를 줄이는 Codex-only 운영 전환 계획 문서화
-- 완료한 것: `docs/CODEX-AUTONOMOUS-LOOP.md`에 Codex-only 운영 원칙 추가
-- 완료한 것: `docs/CODEX-TOKEN-STRATEGY.md`에 ChatGPT 의존도 줄이기 원칙 추가
-- 완료한 것: `context/TASK_QUEUE.md`에 TASK-009, TASK-010, TASK-011 추가
-- 현재 상태: 요청 범위 문서 갱신 완료, 검증은 `git diff --stat`로 확인
-- 다음 단계: 자동 루프 기준 다음 후보는 P1인 TASK-009 또는 TASK-010
-- 추천 커밋 메시지: `:memo: docs: Codex-only 운영 전환 계획을 추가한다`
+- 현재 목표: 자율 루프 운영 메타 파일 예외 규칙 추가 및 TASK-009 BLOCKED 복구
+- 완료한 것: `prompts/agent-loop/`에 운영 메타 파일 예외 규칙 추가
+- 완료한 것: TASK-009 상태를 TODO로 되돌리고 TASK-009~011 수정 허용 파일에 `context/current-focus.md` 추가
+- 완료한 것: `context/DECISION_LOG.md`에 운영 메타 파일 예외 결정을 기록
+- 현재 상태: TASK-009 TODO
+- 다음 단계: 별도 지시가 있으면 TASK-009 본작업을 다시 실행
+- 추천 커밋 메시지: `:memo: docs: 자율 루프 운영 메타 파일 예외 규칙을 추가한다`
