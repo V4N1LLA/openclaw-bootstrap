@@ -63,3 +63,42 @@
 - 검증 명령: `Select-String -LiteralPath context/TASK_QUEUE.md -Pattern "TASK-005"`
 - 예상 토큰 등급: M
 - 비고: 다음 자동 루프 실행 후보.
+
+- ID: TASK-006
+- 상태: TODO
+- 우선순위: P1
+- 추천 effort: medium
+- 작업 목표: Codex reasoning effort 라우팅 정책 문서와 profiles 템플릿을 추가한다.
+- 수정 허용 파일: `codex/profiles/`, `docs/CODEX-EFFORT-ROUTING.md`, `AGENTS.md`
+- 읽어도 되는 파일: `AGENTS.md`, `docs/CODEX-TOKEN-STRATEGY.md`
+- 금지사항: 실제 서비스 코드 생성 금지, OpenClaw 실행 금지, git commit/push 금지
+- 완료 조건: low/medium/high/xhigh 사용 기준이 문서화됨, xhigh를 기본값으로 사용하지 말라는 규칙이 포함됨
+- 검증 명령: `git diff --stat`
+- 예상 토큰 등급: M
+- 비고: 기본은 medium, 단순 작업은 low, 복잡/보안 작업은 high/xhigh로 분류한다.
+
+- ID: TASK-007
+- 상태: TODO
+- 우선순위: P1
+- 추천 effort: medium
+- 작업 목표: effort 라우터 프롬프트와 실행 스크립트를 추가한다.
+- 수정 허용 파일: `prompts/router/`, `scripts/codex-router.bat`, `scripts/codex-run-low.bat`, `scripts/codex-run-medium.bat`, `scripts/codex-run-high.bat`, `scripts/codex-run-xhigh.bat`
+- 읽어도 되는 파일: `docs/CODEX-EFFORT-ROUTING.md`, `scripts/codex-run-next.bat`, `prompts/agent-loop/`
+- 금지사항: git commit/push 금지, OpenClaw 실행 금지, token/secret 출력 금지
+- 완료 조건: 작업 분류 프롬프트 생성, effort별 실행 스크립트 생성, xhigh 실행 전 경고 문구 포함
+- 검증 명령: `git diff --stat`
+- 예상 토큰 등급: M
+- 비고: 자동 실행보다 분류 후 선택 실행 구조를 우선한다.
+
+- ID: TASK-008
+- 상태: TODO
+- 우선순위: P2
+- 추천 effort: low
+- 작업 목표: TASK_QUEUE 작업 형식에 추천 effort 필드가 일관되게 들어갔는지 리뷰한다.
+- 수정 허용 파일: `context/TASK_QUEUE.md`, `context/HANDOFF.md`
+- 읽어도 되는 파일: `context/TASK_QUEUE.md`, `context/HANDOFF.md`
+- 금지사항: git commit/push 금지, 전체 저장소 탐색 금지
+- 완료 조건: 모든 TODO/DONE 작업에 추천 effort 필드가 있거나 예외가 명시됨
+- 검증 명령: `git diff --stat`
+- 예상 토큰 등급: S
+- 비고: 문서 일관성 점검 작업이다.
