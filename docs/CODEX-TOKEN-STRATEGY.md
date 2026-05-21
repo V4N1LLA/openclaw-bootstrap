@@ -21,6 +21,13 @@
 3. Diff review: 현재 diff 기준으로 위험만 검토한다.
 4. Handoff: 다음 세션이 이어받을 수 있게 짧게 정리한다.
 
+## ChatGPT 의존도 줄이기
+
+- ChatGPT 대화도 길어지면 컨텍스트 비용이 생긴다.
+- 반복 작업은 ChatGPT에 묻지 말고 Codex `run-next`로 처리한다.
+- ChatGPT에게 묻기 전에 `HANDOFF.md`, `TASK_QUEUE.md`, `DECISION_LOG.md`를 먼저 확인한다.
+- 막힌 경우에는 문제 요약 20줄 이하, 관련 파일 5개 이하, 실패 로그 핵심만 가져와 질문한다.
+
 ## OpenClaw/Telegram 보고 방식
 
 - 긴 로그를 Telegram으로 보내지 않는다.

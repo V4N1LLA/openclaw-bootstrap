@@ -25,6 +25,17 @@
 
 작업 시작 전에는 `context/current-focus.md`를 갱신하고, 작업 종료 후에는 `HANDOFF.md`를 갱신한다.
 
+## Codex-only 운영 원칙
+
+- ChatGPT는 설계, 전략, 막힌 문제 해결처럼 판단 비용이 큰 문제에만 사용한다.
+- 반복 작업은 Codex CLI와 `TASK_QUEUE.md`, `HANDOFF.md`를 기준으로 처리한다.
+- 한 사이클은 `scripts/codex-run-next.bat` 1회 실행이다.
+- 긴 대화형 Codex 세션을 유지하지 않는다.
+- Codex 대화형 세션 안에서 `codex exec`를 다시 실행하지 않는다.
+- `run-next`는 Git Bash나 PowerShell에서 직접 실행한다.
+- 각 작업은 `TASK_QUEUE.md`에 명확한 수정 허용 파일, 읽어도 되는 파일, 완료 조건을 포함해야 한다.
+- `HANDOFF.md`는 다음 세션이 ChatGPT 없이 이어갈 수 있을 만큼만 짧게 유지한다.
+
 ## 멈춰야 하는 조건
 
 Codex는 secret/token, `.env`, git push, deploy, force push, DB 삭제/초기화가 필요하면 멈춘다. 작업 범위가 허용 파일을 넘거나, 테스트 실패 원인이 불명확하거나, 같은 실패가 2회 반복되어도 멈춘다. 예상 토큰 등급이 `L` 이상이거나 제품/아키텍처 판단이 필요할 때도 사용자 결정을 기다린다.
