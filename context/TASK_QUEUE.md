@@ -78,7 +78,7 @@
 - 비고: reasoning effort 정책 문서와 low/medium/high/xhigh 프로필 템플릿 확인 완료.
 
 - ID: TASK-007
-- 상태: TODO
+- 상태: DONE
 - 우선순위: P1
 - 추천 effort: medium
 - 작업 목표: effort 라우터 프롬프트와 실행 스크립트를 추가한다.
@@ -88,7 +88,7 @@
 - 완료 조건: 작업 분류 프롬프트 생성, effort별 실행 스크립트 생성, xhigh 실행 전 경고 문구 포함
 - 검증 명령: `git diff --stat`
 - 예상 토큰 등급: M
-- 비고: 자동 실행보다 분류 후 선택 실행 구조를 우선한다.
+- 비고: 저장소 루트에서 산출물 존재, xhigh 경고 문구, `git diff --stat` 재검증 완료.
 
 - ID: TASK-008
 - 상태: TODO
