@@ -52,6 +52,27 @@ Codex는 secret/token, `.env`, git push, deploy, force push, DB 삭제/초기화
 
 이 하네스는 OpenClaw나 Telegram Bot을 직접 실행하지 않는다. Telegram으로 연결할 때는 자동 루프의 최종 요약만 보내고, token, secret, password, `.env` 내용은 어떤 채널에도 출력하지 않는다. OpenClaw와 연결할 때도 실제 서비스 코드는 별도 저장소에서 다루고, 이 저장소는 문서, 프롬프트, 검증 스크립트만 관리한다.
 
+## 하네스 v0.1 완료 기준
+
+하네스 v0.1은 Codex가 작업 큐에서 다음 작업 하나를 고르고, 허용 파일 범위 안에서 실행하고, 검증과 인계를 남기는 최소 루프가 문서와 스크립트로 준비되면 완료로 본다.
+
+- 루트 `AGENTS.md`에 자율 작업 루프, 허용 파일, 보안, 중단 조건이 정리되어 있다.
+- `context/TASK_QUEUE.md`, `context/current-focus.md`, `context/HANDOFF.md`로 다음 작업 선택과 인계가 가능하다.
+- `scripts/codex-run-next.bat`과 `scripts/codex-agent-loop.bat`로 단일 실행과 제한 반복 실행을 할 수 있다.
+- reasoning effort 라우팅 기준과 실행 프롬프트/스크립트가 준비되어 있다.
+- secret, token, `.env`, 실제 서비스 코드, OpenClaw 실행을 다루지 않는다는 경계가 문서화되어 있다.
+- 남은 작업이 하네스 자체 완성에 필수인 결함이 아니라 개선, 확장, 실제 MVP 전환 준비라면 v0.1 범위 밖으로 미룬다.
+
+## MVP repo 전환 조건
+
+다음 조건을 만족하면 이 저장소의 자동 루프 작업을 더 늘리기보다 실제 MVP 저장소 준비로 전환한다.
+
+- 하네스 v0.1 완료 기준을 모두 충족한다.
+- `TASK_QUEUE.md`에 남은 P0/P1 작업이 실제 MVP 저장소 초기화나 전환 문서 작성에 관한 작업뿐이다.
+- MVP 저장소에서 사용할 `AGENTS.md`, `context/`, `docs/`, `prompts/` 템플릿의 초안이 준비되어 있다.
+- 실제 서비스 코드 생성, OpenClaw 실행, Telegram token 설정은 이 하네스가 아니라 별도 MVP 저장소 또는 사용자의 수동 절차에서 처리하기로 분리되어 있다.
+- 전환 후 첫 작업은 실제 기능 구현이 아니라 MVP 저장소의 작업 큐, 보안 경계, 검증 명령을 확정하는 부트스트랩 작업으로 시작한다.
+
 ## 예시 명령어
 
 ```bat
