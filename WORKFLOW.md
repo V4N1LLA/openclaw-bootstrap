@@ -96,6 +96,13 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 5. `gh`가 없거나 인증되지 않았으면 GitHub PR URL 후보와 현재 Git 상태만 보고한다.
 6. 파일 수정, push, merge는 실행하지 않는다.
 
+### `OCB-001 PR 상태 확인해줘`
+
+1. `PR 상태 알려줘`와 동일하게 조회 전용 명령으로 해석한다.
+2. PR open/closed/merged 여부, mergeable 상태, review/comment 상태, build/test 상태만 확인한다.
+3. `문제 없으면 merge 해`, `문제 없으면 병합해`, `확인 후 merge 해` 같은 조건부 merge 승인 문구가 함께 있지 않으면 merge를 실행하지 않는다.
+4. 파일 수정, push, merge는 실행하지 않는다.
+
 ### `OCB-001 PR merge 준비해줘`
 
 1. 작업 시작 절차를 수행한다.
@@ -104,6 +111,16 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 4. Low/P3 리뷰는 후속 TODO로 분리할 수 있다.
 5. 리뷰가 아직 없으면 `자동 리뷰 미도착`으로 보고하고 사용자 판단을 기다린다.
 6. merge는 사용자 명시 승인 전까지 실행하지 않는다.
+
+### `OCB-001 PR 상태 확인해줘. 문제 없으면 merge 해.`
+
+1. `PR 상태 확인해줘`는 조회 전용 단계로 먼저 수행한다.
+2. `문제 없으면 merge 해`는 조건부 merge 승인으로 해석한다.
+3. 조건부 merge 승인일 때도 Deferred PR Review Check를 먼저 수행한다.
+4. P0/P1/P2 리뷰, unresolved blocking review thread, failing build/test, dirty working tree, head SHA 불일치, `.env` 포함 위험이 있으면 merge를 중단하고 STOP 보고한다.
+5. PR이 open, mergeable, 최신 head SHA 기준이고 차단 리뷰와 검증 실패가 없을 때만 merge를 진행한다.
+6. merge 실행 시 merge 대상 PR 번호, base/head, head SHA, merge method를 보고한다.
+7. merge 후 PR URL, merge commit SHA, 최종 상태를 보고한다.
 
 작업 ID가 `TASKS.md`에 없으면 임의로 진행하지 말고 확인 질문을 한다.
 
@@ -143,7 +160,8 @@ merge 준비 명령은 항상 이 확인을 먼저 수행한다.
 - `검증만 해줘`: `.harness/playbooks/verify-task.md`
 - `커밋해줘`: `.harness/playbooks/commit-task.md`
 - `PR 생성해줘`: `.harness/playbooks/create-pr.md`
-- `PR 상태 알려줘`, `PR merge 준비해줘`: Deferred PR Review Check 적용
+- `PR 상태 알려줘`, `PR 상태 확인해줘`, `PR merge 준비해줘`: Deferred PR Review Check 적용
+- `문제 없으면 merge 해`: 조건부 merge 승인으로 해석하고, 상태 확인 결과가 안전할 때만 merge
 - build/test 실패 복구: `.harness/playbooks/recover-failed-task.md`
 
 ### Skill 선택 기준
