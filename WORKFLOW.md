@@ -7,8 +7,9 @@
 3. `git branch --show-current`로 브랜치가 `feature/OCB-001-discord-local-agent-gateway`인지 확인한다.
 4. `git status --short`로 기존 변경 사항을 확인한다.
 5. `AGENTS.md`, `TASKS.md`, `WORKFLOW.md`, `CONTEXT.md`를 읽고 현재 작업 범위를 확인한다.
-6. 사용자가 작업 ID를 지정했다면 `TASKS.md`에서 해당 작업의 `Status`, `Scope`, `Validation`, `Forbidden`을 확인한다.
-7. 사용자가 작업 ID를 지정하지 않았다면 `TASKS.md`에서 다음 `TODO` 작업 하나만 선택한다.
+6. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태의 열린 PR이 기록되어 있으면 새 작업 시작 전 먼저 Deferred PR Review Check를 수행한다.
+7. 사용자가 작업 ID를 지정했다면 `TASKS.md`에서 해당 작업의 `Status`, `Scope`, `Validation`, `Forbidden`을 확인한다.
+8. 사용자가 작업 ID를 지정하지 않았다면 `TASKS.md`에서 다음 `TODO` 작업 하나만 선택한다.
 
 ## Short Command Mode
 
@@ -82,17 +83,49 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 6. `gh`가 있고 인증되어 있으면 `gh pr create`로 PR 생성을 진행할 수 있다.
 7. `gh`가 없거나 인증되지 않았으면 PR 생성 URL, 제목, 본문만 출력하고 멈춘다.
 8. PR 생성 후 PR URL을 보고한다.
-9. merge, squash merge, deploy는 별도 승인 전까지 실행하지 않는다.
+9. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태를 기록한다.
+10. 자동 리뷰를 기다리며 프로세스를 점유하지 않고 작업을 종료한다.
+11. merge, squash merge, deploy는 별도 승인 전까지 실행하지 않는다.
 
 ### `OCB-001 PR 상태 알려줘`
 
 1. 작업 시작 절차를 수행한다.
-2. 현재 브랜치와 upstream을 확인한다.
-3. 가능하면 `gh pr status` 또는 `gh pr view`로 현재 브랜치의 PR 상태를 확인한다.
-4. `gh`가 없거나 인증되지 않았으면 GitHub PR URL 후보와 현재 Git 상태만 보고한다.
-5. 파일 수정, push, merge는 실행하지 않는다.
+2. Deferred PR Review Check를 수행한다.
+3. 현재 브랜치와 upstream을 확인한다.
+4. 가능하면 `gh pr status` 또는 `gh pr view`로 현재 브랜치의 PR 상태를 확인한다.
+5. `gh`가 없거나 인증되지 않았으면 GitHub PR URL 후보와 현재 Git 상태만 보고한다.
+6. 파일 수정, push, merge는 실행하지 않는다.
+
+### `OCB-001 PR merge 준비해줘`
+
+1. 작업 시작 절차를 수행한다.
+2. merge 준비 판단 전에 반드시 Deferred PR Review Check를 수행한다.
+3. P0/P1/P2 리뷰가 있으면 merge 준비 완료로 보고하지 않고 작업화 또는 사용자 확인을 요청한다.
+4. Low/P3 리뷰는 후속 TODO로 분리할 수 있다.
+5. 리뷰가 아직 없으면 `자동 리뷰 미도착`으로 보고하고 사용자 판단을 기다린다.
+6. merge는 사용자 명시 승인 전까지 실행하지 않는다.
 
 작업 ID가 `TASKS.md`에 없으면 임의로 진행하지 말고 확인 질문을 한다.
+
+## Deferred PR Review Check
+
+PR 생성 직후에는 GitHub/Codex 자동 리뷰가 늦게 도착할 수 있다. PR 생성 프로세스는 자동 리뷰를 기다리며 점유하지 않는다.
+
+대신 PR 생성이 완료되면 `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태를 기록한다.
+
+이후 다음 사용자 명령이 들어오면 새 작업을 시작하기 전에 열린 PR의 리뷰와 댓글 상태를 먼저 확인한다.
+
+절차:
+
+1. `review_pending` 상태의 PR 번호와 URL을 확인한다.
+2. 열린 PR의 review, inline comment, conversation comment를 확인한다.
+3. Codex 리뷰가 있으면 severity를 분류한다.
+4. P0/P1/P2는 작업 ID로 등록하거나 사용자에게 작업화를 보고한다.
+5. Low/P3는 후속 TODO로 남긴다.
+6. 리뷰가 아직 없으면 `자동 리뷰 미도착`으로 보고하고 사용자 판단을 기다린다.
+7. 확인 결과를 `TASKS.md` 또는 `CONTEXT.md`에 갱신한다.
+
+merge 준비 명령은 항상 이 확인을 먼저 수행한다.
 
 ## Harness Skill Mode
 
@@ -110,6 +143,7 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 - `검증만 해줘`: `.harness/playbooks/verify-task.md`
 - `커밋해줘`: `.harness/playbooks/commit-task.md`
 - `PR 생성해줘`: `.harness/playbooks/create-pr.md`
+- `PR 상태 알려줘`, `PR merge 준비해줘`: Deferred PR Review Check 적용
 - build/test 실패 복구: `.harness/playbooks/recover-failed-task.md`
 
 ### Skill 선택 기준

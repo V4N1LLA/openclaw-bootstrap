@@ -12,6 +12,8 @@ PR 생성 전 아래 항목을 확인한다.
 - build/test 검증 결과가 있는지 확인한다.
 - PR 제목과 본문이 `prepare-pr` 기준을 따르는지 확인한다.
 - `gh`가 없거나 인증되지 않았으면 PR 생성 URL과 초안만 보고한다.
+- PR 생성 후 `review_pending` 상태를 `TASKS.md` 또는 `CONTEXT.md`에 기록할 준비가 되었는지 확인한다.
+- merge 준비 명령에서는 PR review/comment pending 상태를 먼저 확인한다.
 
 금지:
 

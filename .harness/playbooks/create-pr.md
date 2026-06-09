@@ -22,6 +22,17 @@
 12. `gh`가 사용 가능하면 `gh pr create`로 PR을 생성한다.
 13. `gh`가 없거나 인증되지 않았으면 PR 생성 URL, 제목, 본문만 출력하고 멈춘다.
 14. PR 생성 후 PR URL을 보고한다.
+15. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태를 기록한다.
+16. 자동 리뷰를 기다리며 프로세스를 점유하지 않고 종료한다.
+
+## Deferred PR Review Check
+
+- PR 생성 직후 GitHub/Codex 자동 리뷰가 아직 도착하지 않을 수 있다.
+- PR 생성 프로세스는 자동 리뷰 완료를 기다리지 않는다.
+- 다음 사용자 명령이 들어오면 새 작업 시작 전 열린 PR의 review/comment 상태를 먼저 확인한다.
+- Codex 리뷰가 있으면 P0/P1/P2만 작업화한다.
+- Low/P3는 후속 TODO로 남긴다.
+- 리뷰가 없으면 `자동 리뷰 미도착`으로 보고하고 사용자 판단을 기다린다.
 
 ## push 처리
 

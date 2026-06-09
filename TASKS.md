@@ -31,6 +31,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-001-MODEL-ROUTING | DONE | 기본 로컬 LLM 모델 정책과 ask-local 모델 선택 옵션 정리 |
 | OCB-001-PR-HARNESS | DONE | PR 생성 절차 하네스화 |
 | OCB-001-CODEX-REVIEW-01 | DONE | Codex Review `/aw status` 응답 분할 피드백 반영 |
+| OCB-001-AUTO-REVIEW-HARNESS | DONE | Deferred PR Review Check 정책 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -293,6 +294,33 @@ Forbidden:
 - PR/deploy 자동화 금지
 - 커밋 금지
 - push 금지
+- secret/token/password/API key 원문 출력 금지
+
+## OCB-001-AUTO-REVIEW-HARNESS: Deferred PR Review Check 정책 추가
+
+Status: DONE
+
+Scope:
+- PR 생성 직후 자동 리뷰를 기다리며 프로세스를 점유하지 않는 정책 문서화
+- PR 생성 완료 시 `review_pending` 상태 기록 규칙 추가
+- 다음 사용자 명령 시작 전 열린 PR 리뷰/댓글 상태를 먼저 확인하는 절차 추가
+- Codex 리뷰 severity 중 P0/P1/P2만 작업화하고 Low/P3는 후속 TODO로 남기는 규칙 추가
+- merge 준비 명령은 pending review 확인을 먼저 수행하도록 문서화
+
+Review Pending:
+- PR #1: https://github.com/V4N1LLA/openclaw-bootstrap/pull/1
+- State: review_pending
+- Next check: 다음 사용자 명령 시작 전 PR review/comment 상태 확인
+
+Validation:
+- `git status --short`
+- `rg -n "review_pending|Deferred PR Review Check|P0/P1/P2|Low/P3" WORKFLOW.md TASKS.md CONTEXT.md .harness/playbooks/create-pr.md .harness/checklists/before-pr.md`
+
+Forbidden:
+- 실제 PR 생성 금지
+- push 금지
+- merge 금지
+- deploy 자동화 금지
 - secret/token/password/API key 원문 출력 금지
 
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리

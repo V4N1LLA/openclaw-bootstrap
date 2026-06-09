@@ -77,3 +77,20 @@ Local LLM은 실제 개발 주체가 아니라 요약, 문서화, 커밋 메시�
 이 구조는 Claude Code Superpowers/Skills류 개발 프로세스처럼 재사용 가능한 절차를 문서화하되, 실제 실행 권한은 이 레포의 안전 규칙 안에 묶어 둔다.
 
 목표 흐름은 `짧은 명령 -> 작업 해석 -> 실행 절차 -> 검증 -> 보고`다.
+
+## Deferred PR Review Check
+
+PR 생성 직후에는 GitHub/Codex 자동 리뷰가 늦게 도착할 수 있다.
+
+에이전트는 PR 생성 완료 후 자동 리뷰를 기다리며 프로세스를 점유하지 않는다.
+
+대신 열린 PR에 대해 `review_pending` 상태를 기록하고, 다음 사용자 명령이 들어오면 새 작업을 시작하기 전에 PR review/comment 상태를 먼저 확인한다.
+
+Codex 리뷰가 있으면 P0/P1/P2만 작업화한다. Low/P3는 후속 TODO로 남긴다.
+
+리뷰가 아직 도착하지 않았으면 `자동 리뷰 미도착`으로 보고하고 사용자 판단을 기다린다.
+
+현재 pending 대상:
+
+- PR #1: https://github.com/V4N1LLA/openclaw-bootstrap/pull/1
+- State: review_pending
