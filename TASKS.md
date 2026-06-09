@@ -29,6 +29,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-001-DISCORD-RUNTIME | DONE | Discord slash command 등록 스크립트 보완 |
 | OCB-001-ASKLOCAL-TIMEOUT | DONE | ask-local timeout, 진행 로그, 오류 응답 보강 |
 | OCB-001-MODEL-ROUTING | DONE | 기본 로컬 LLM 모델 정책과 ask-local 모델 선택 옵션 정리 |
+| OCB-001-PR-HARNESS | DONE | PR 생성 절차 하네스화 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -248,6 +249,29 @@ Forbidden:
 - PR/deploy 자동화 금지
 - 커밋 금지
 - push 금지
+- secret/token/password/API key 원문 출력 금지
+
+## OCB-001-PR-HARNESS: PR 생성 절차 하네스화
+
+Status: DONE
+
+Scope:
+- `OCB-001 PR 초안 작성해줘`, `OCB-001 PR 생성해줘`, `OCB-001 PR 상태 알려줘` 짧은 명령 해석 규칙 추가
+- `.harness/playbooks/create-pr.md` 작성
+- `.harness/checklists/before-pr.md` 작성
+- `prepare-pr` skill을 PR 초안과 실제 PR 생성 준비에 모두 사용할 수 있도록 보강
+- PR 생성 전 브랜치, working tree, upstream, 최신 커밋, secret 포함 위험, build/test 검증 결과 확인 절차 문서화
+- `gh pr create` 우선 지원과 fallback 절차 문서화
+
+Validation:
+- `git status --short`
+- `find .harness -maxdepth 3 -type f | sort`
+
+Forbidden:
+- 실제 PR 생성 금지
+- push 금지
+- merge 금지
+- deploy 자동화 금지
 - secret/token/password/API key 원문 출력 금지
 
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리

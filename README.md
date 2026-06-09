@@ -30,6 +30,20 @@ gateway/discord-agent-gateway
 - 실제 secret, token, password, API key 원문은 저장하거나 출력하지 않는다.
 - `.env`는 커밋하지 않고 `.env.example`만 예시로 유지한다.
 
+## OCB-001 하네스 짧은 명령
+
+이 브랜치에는 Telegram에서 짧은 명령으로 작업을 이어가기 위한 하네스 문서가 포함되어 있다.
+
+예시:
+
+```text
+OCB-001 PR 초안 작성해줘
+OCB-001 PR 생성해줘
+OCB-001 PR 상태 알려줘
+```
+
+PR 생성 요청은 `.harness/playbooks/create-pr.md`와 `.harness/checklists/before-pr.md`를 기준으로 처리한다. PR 생성 전에는 브랜치, working tree, upstream, 최신 커밋, secret 포함 여부, build/test 결과를 확인한다. `gh`가 없거나 인증되지 않았으면 PR 생성 URL과 제목/본문만 출력하고 멈춘다.
+
 ## 자동화 가능한 것
 
 - Windows에서 필요한 명령어가 설치되어 있는지 점검

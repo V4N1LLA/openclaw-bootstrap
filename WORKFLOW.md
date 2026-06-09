@@ -65,6 +65,33 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 2. `TASKS.md`에서 다음 `TODO` 작업 하나를 확인한다.
 3. 해당 작업의 `Scope`, `Validation`, `Forbidden`을 요약한다.
 
+### `OCB-001 PR 초안 작성해줘`
+
+1. 작업 시작 절차를 수행한다.
+2. `TASKS.md`에서 `OCB-001` 관련 완료 상태와 검증 결과를 확인한다.
+3. `.harness/skills/prepare-pr/SKILL.md` 기준으로 PR 제목과 본문 초안을 작성한다.
+4. 실제 PR 생성, push, merge는 실행하지 않는다.
+
+### `OCB-001 PR 생성해줘`
+
+1. 작업 시작 절차를 수행한다.
+2. `.harness/playbooks/create-pr.md`를 선택한다.
+3. `.harness/checklists/before-pr.md`를 적용한다.
+4. 현재 브랜치, working tree clean 여부, upstream, 최신 커밋 SHA, secret 포함 위험, build/test 검증 결과를 확인한다.
+5. push가 필요하면 사용자에게 먼저 보고하고, 명시 승인 없이 push하지 않는다.
+6. `gh`가 있고 인증되어 있으면 `gh pr create`로 PR 생성을 진행할 수 있다.
+7. `gh`가 없거나 인증되지 않았으면 PR 생성 URL, 제목, 본문만 출력하고 멈춘다.
+8. PR 생성 후 PR URL을 보고한다.
+9. merge, squash merge, deploy는 별도 승인 전까지 실행하지 않는다.
+
+### `OCB-001 PR 상태 알려줘`
+
+1. 작업 시작 절차를 수행한다.
+2. 현재 브랜치와 upstream을 확인한다.
+3. 가능하면 `gh pr status` 또는 `gh pr view`로 현재 브랜치의 PR 상태를 확인한다.
+4. `gh`가 없거나 인증되지 않았으면 GitHub PR URL 후보와 현재 Git 상태만 보고한다.
+5. 파일 수정, push, merge는 실행하지 않는다.
+
 작업 ID가 `TASKS.md`에 없으면 임의로 진행하지 말고 확인 질문을 한다.
 
 ## Harness Skill Mode
@@ -82,6 +109,7 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 - `진행해줘`, `이어서 해줘`: `.harness/playbooks/implement-task.md`
 - `검증만 해줘`: `.harness/playbooks/verify-task.md`
 - `커밋해줘`: `.harness/playbooks/commit-task.md`
+- `PR 생성해줘`: `.harness/playbooks/create-pr.md`
 - build/test 실패 복구: `.harness/playbooks/recover-failed-task.md`
 
 ### Skill 선택 기준
@@ -125,6 +153,7 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 
 - 사용자 승인 없는 커밋 금지
 - 사용자 승인 없는 push 금지
+- 사용자 승인 없는 merge 금지
 - 사용자 승인 없는 패키지 설치 금지
 - secret, token, password, API key 원문 출력 금지
 - `.env` 작성 또는 커밋 금지
