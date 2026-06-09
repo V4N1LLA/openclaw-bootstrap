@@ -4,6 +4,32 @@
 
 이 저장소는 실제 Telegram Bot token을 발급하지 않고, BotFather를 자동화하지 않으며, OpenClaw를 지금 실행하지 않는다. 사용자는 문서를 따라 수동으로 token을 발급하고, 필요할 때만 스크립트를 실행한다.
 
+## OCB-001 Discord + Ollama Local Agent Gateway
+
+이 브랜치에서는 기존 Telegram Bootstrap 역할을 유지하면서 Discord + Ollama 기반 로컬 Agent Gateway 초안을 추가한다.
+
+Gateway 위치:
+
+```text
+gateway/discord-agent-gateway
+```
+
+1차 MVP 목표:
+
+- Discord에서 `/aw ask-local` 입력
+- Ollama OpenAI-compatible endpoint로 로컬 LLM 호출
+- Discord에 로컬 LLM 응답 출력
+- Discord에서 `/aw status` 입력
+- Gateway, Ollama, Agent Workbench 상태 확인
+
+보수적 제한:
+
+- shell command 실행 기능은 구현하지 않는다.
+- Git write 자동화는 구현하지 않는다.
+- PR/deploy 자동화는 구현하지 않는다.
+- 실제 secret, token, password, API key 원문은 저장하거나 출력하지 않는다.
+- `.env`는 커밋하지 않고 `.env.example`만 예시로 유지한다.
+
 ## 자동화 가능한 것
 
 - Windows에서 필요한 명령어가 설치되어 있는지 점검
@@ -41,6 +67,31 @@ agent workspace를 등록해야 한다면 마지막에 실행한다.
 
 ```bat
 scripts\07-create-agent-workspace.bat
+```
+
+## Discord Gateway 로컬 실행
+
+Windows CMD에서 저장소 루트 기준으로 실행한다.
+
+빌드 확인:
+
+```bat
+scripts\08-build-discord-agent-gateway.bat
+```
+
+로컬 실행:
+
+```bat
+scripts\09-start-discord-agent-gateway.bat
+```
+
+실행 전 `gateway\discord-agent-gateway\.env.example`을 참고해 로컬 환경 변수를 준비한다. 실제 `.env` 파일은 git에 커밋하지 않는다.
+
+Ollama 기본 설정:
+
+```text
+OLLAMA_BASE_URL=http://localhost:11434/v1
+OLLAMA_DEFAULT_MODEL=qwen2.5-coder:3b
 ```
 
 ## WSL2 권장 이유
