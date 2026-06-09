@@ -30,6 +30,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-001-ASKLOCAL-TIMEOUT | DONE | ask-local timeout, 진행 로그, 오류 응답 보강 |
 | OCB-001-MODEL-ROUTING | DONE | 기본 로컬 LLM 모델 정책과 ask-local 모델 선택 옵션 정리 |
 | OCB-001-PR-HARNESS | DONE | PR 생성 절차 하네스화 |
+| OCB-001-CODEX-REVIEW-01 | DONE | Codex Review `/aw status` 응답 분할 피드백 반영 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -272,6 +273,26 @@ Forbidden:
 - push 금지
 - merge 금지
 - deploy 자동화 금지
+- secret/token/password/API key 원문 출력 금지
+
+## OCB-001-CODEX-REVIEW-01: Codex Review `/aw status` 응답 분할 피드백 반영
+
+Status: DONE
+
+Scope:
+- PR #1 Codex Review의 `/aw status` Discord 메시지 길이 제한 피드백 반영
+- `/aw status` 응답도 `sendChunkedReply`를 사용하도록 수정
+- 모델 목록이 길어져도 Discord 2000자 제한에 걸리지 않도록 응답 분할 경로 재사용
+
+Validation:
+- `cd gateway/discord-agent-gateway && npm run build`
+
+Forbidden:
+- shell command 실행 기능 구현 금지
+- Git write 자동화 금지
+- PR/deploy 자동화 금지
+- 커밋 금지
+- push 금지
 - secret/token/password/API key 원문 출력 금지
 
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리

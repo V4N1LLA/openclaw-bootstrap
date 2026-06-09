@@ -26,7 +26,7 @@ export async function handleAwCommand(
       getAgentWorkbenchStatus(config)
     ]);
 
-    await interaction.editReply([
+    const statusMessage = [
       "Agent Gateway status",
       formatStatusLine("Gateway", true, "Discord interaction handler is running"),
       formatStatusLine(
@@ -46,7 +46,9 @@ export async function handleAwCommand(
       ),
       "",
       `Ollama models: ${ollamaStatus.models.length > 0 ? ollamaStatus.models.join(", ") : "none detected"}`
-    ].join("\n"));
+    ].join("\n");
+
+    await sendChunkedReply(interaction, statusMessage);
   }
 }
 
