@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  repository-sanity:
+    name: Repository sanity
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check required files
+        run: |
+          set -euo pipefail
+          test -f AGENTS.md
+          test -f TASKS.md
+          test -f WORKFLOW.md
+          test -f CONTEXT.md
+
+      - name: Detect gateway changes
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base_sha="${{ github.event.pull_request.base.sha }}"
+            head_sha="${{ github.event.pull_request.head.sha }}"
+          else
+            base_sha="${{ github.event.before }}"
+            head_sha="${{ github.sha }}"
+          fi
+
+          if [[ "$base_sha" =~ ^0+$ ]]; then
+            git ls-tree -r --name-only "$head_sha" > changed-files.txt
+          else
+            git diff --name-only "$base_sha" "$head_sha" > changed-files.txt
+          fi
+
+          if grep -q '^gateway/discord-agent-gateway/' changed-files.txt; then
+            echo "gateway_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "gateway_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node
+        if: steps.changes.outputs.gateway_changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: gateway/discord-agent-gateway/package-lock.json
+
+      - name: Install gateway dependencies
+        if: steps.changes.outputs.gateway_changed == 'true'
+        working-directory: gateway/discord-agent-gateway
+        run: npm ci
+
+      - name: Build gateway
+        if: steps.changes.outputs.gateway_changed == 'true'
+        working-directory: gateway/discord-agent-gateway
+        run: npm run build
+
