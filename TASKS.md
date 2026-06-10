@@ -32,6 +32,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-001-PR-HARNESS | DONE | PR 생성 절차 하네스화 |
 | OCB-001-CODEX-REVIEW-01 | DONE | Codex Review `/aw status` 응답 분할 피드백 반영 |
 | OCB-001-AUTO-REVIEW-HARNESS | DONE | Deferred PR Review Check 정책 추가 |
+| OCB-001-MERGE-SAFETY | DONE | PR 상태 확인과 조건부 merge 승인 해석 규칙 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -321,6 +322,25 @@ Forbidden:
 - push 금지
 - merge 금지
 - deploy 자동화 금지
+- secret/token/password/API key 원문 출력 금지
+
+## OCB-001-MERGE-SAFETY: PR 상태 확인과 조건부 merge 승인 해석 규칙 추가
+
+Status: DONE
+
+Scope:
+- `PR 상태 확인해줘`는 조회 전용 명령으로 해석하도록 문서화
+- `문제 없으면 merge 해`는 조건부 merge 승인으로 해석하도록 문서화
+- 조건부 merge 전 Deferred PR Review Check, mergeable 상태, successful/completed build/test checks, pending 또는 missing check, head SHA, unresolved review thread, `.env` 포함 위험을 확인하도록 절차화
+- 차단 조건이 있으면 merge를 중단하고 STOP 보고하도록 규칙 추가
+
+Validation:
+- `git status --short`
+- `rg -n "PR 상태 확인|문제 없으면 merge|조건부 merge|successful/completed|pending 또는 missing|STOP 보고" WORKFLOW.md TASKS.md .harness/checklists/before-pr.md`
+
+Forbidden:
+- 커밋 금지
+- push 금지
 - secret/token/password/API key 원문 출력 금지
 
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리
