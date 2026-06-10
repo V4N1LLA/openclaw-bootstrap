@@ -33,6 +33,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-001-CODEX-REVIEW-01 | DONE | Codex Review `/aw status` 응답 분할 피드백 반영 |
 | OCB-001-AUTO-REVIEW-HARNESS | DONE | Deferred PR Review Check 정책 추가 |
 | OCB-001-MERGE-SAFETY | DONE | PR 상태 확인과 조건부 merge 승인 해석 규칙 추가 |
+| OCB-CI-GATE | DONE | PR merge 전 missing checks를 없애기 위한 GitHub Actions CI gate 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -342,6 +343,31 @@ Forbidden:
 - 커밋 금지
 - push 금지
 - secret/token/password/API key 원문 출력 금지
+
+## OCB-CI-GATE: PR merge 전 GitHub Actions CI gate 추가
+
+Status: DONE
+
+Scope:
+- PR마다 `successful/completed` 상태를 만들 수 있는 GitHub Actions workflow 추가
+- docs-only 변경도 missing checks가 되지 않도록 최소 검증 job 구성
+- Gateway 코드 변경이 있을 때는 `gateway/discord-agent-gateway` build 검증을 실행하도록 경로 또는 job 정책 정리
+- 조건부 merge 하네스가 CI gate 결과를 확인하는 절차를 문서에 반영
+
+Validation:
+- `git status --short`
+- `.github/workflows/ci.yml` YAML 문법 확인
+- `rg -n "pull_request|push:|branches:|gateway/discord-agent-gateway|npm ci|npm run build" .github/workflows/ci.yml`
+- docs-only PR에서는 `Repository sanity` job이 required files만 확인하고 successful/completed check를 생성한다
+- gateway 코드 변경 PR에서는 `gateway/discord-agent-gateway` 변경 감지 후 `npm ci && npm run build`를 실행한다
+
+Forbidden:
+- secret/token/password/API key 원문 출력 금지
+- `.env` 작성 또는 커밋 금지
+- deploy 자동화 금지
+- 사용자 승인 없는 branch protection 변경 금지
+- 커밋 금지
+- push 금지
 
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리
 
