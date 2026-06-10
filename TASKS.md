@@ -34,6 +34,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-001-AUTO-REVIEW-HARNESS | DONE | Deferred PR Review Check 정책 추가 |
 | OCB-001-MERGE-SAFETY | DONE | PR 상태 확인과 조건부 merge 승인 해석 규칙 추가 |
 | OCB-CI-GATE | DONE | PR merge 전 missing checks를 없애기 위한 GitHub Actions CI gate 추가 |
+| OCB-OLLAMA-FALLBACK | DONE | ask-local Ollama 모델 실패 시 기본 모델 fallback 및 안내 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -366,6 +367,29 @@ Forbidden:
 - `.env` 작성 또는 커밋 금지
 - deploy 자동화 금지
 - 사용자 승인 없는 branch protection 변경 금지
+- 커밋 금지
+- push 금지
+
+## OCB-OLLAMA-FALLBACK: ask-local Ollama 모델 fallback 추가
+
+Status: DONE
+
+Scope:
+- `/aw ask-local`에서 선택 Ollama 모델이 quota/rate-limit 계열 오류로 실패하면 기본 모델로 1회 fallback
+- 기본 Ollama 모델도 quota/rate-limit 계열 오류로 실패하면 명확한 사용자 안내 반환
+- fallback 시도와 결과를 로그에 남김
+- 기존 timeout, 연결 실패, 일반 HTTP 실패 응답 흐름 유지
+
+Validation:
+- `cd gateway/discord-agent-gateway && npm run build`
+
+Forbidden:
+- 외부 유료 API 자동 전환 금지
+- shell command 실행 기능 구현 금지
+- Git write 자동화 금지
+- PR/deploy 자동화 금지
+- secret/token/password/API key 원문 출력 금지
+- `.env` 작성 또는 커밋 금지
 - 커밋 금지
 - push 금지
 
