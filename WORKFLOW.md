@@ -11,6 +11,92 @@
 7. 사용자가 작업 ID를 지정했다면 `TASKS.md`에서 해당 작업의 `Status`, `Scope`, `Validation`, `Forbidden`을 확인한다.
 8. 사용자가 작업 ID를 지정하지 않았다면 `TASKS.md`에서 다음 `TODO` 작업 하나만 선택한다.
 
+## Discord PM Local LLM-first 정책
+
+최종 운영 기준은 Discord `#agent-pm`의 PM/Sub-Agent 흐름이다. Telegram은 Discord 운영이 완성되기 전 임시 소통 창구로만 본다.
+
+Discord `#agent-pm`에 짧은 명령이 들어오면 PM Agent는 Codex를 바로 호출하지 않는다. 먼저 Local LLM 또는 규칙 기반 전처리로 다음 산출물을 만든다.
+
+- 요청 요약
+- 작업 분류: `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`
+- 예상 수정 파일 후보
+- 검증 후보
+- Codex에 전달할 최소 컨텍스트
+- 사용자 승인 필요 여부
+
+### 작업 분류 기준
+
+`LOW`:
+
+- 파일 수정 없이 답변 가능한 단순 질의
+- 문서, 커밋 메시지, PR 본문, diff 요약 초안
+- 이미 수집된 정보의 정리와 재표현
+- Local LLM 또는 규칙 기반으로 처리하고 Codex 호출을 생략할 수 있다.
+
+`MEDIUM`:
+
+- 제한된 파일 범위의 문서 변경
+- 작은 코드 변경 후보 정리
+- 검증 명령 후보 정리
+- Local LLM이 계획, 파일 후보, 검증 후보를 만든 뒤 Codex에 최소 컨텍스트만 전달한다.
+
+`HIGH`:
+
+- 실제 코드 수정
+- 테스트 실패 수정
+- 구조 변경
+- 여러 파일에 걸친 동작 변경
+- Codex가 수행하고 review 또는 별도 검증을 거친다.
+
+`CRITICAL`:
+
+- 배포, force push, destructive git
+- 권한/보안 정책 변경
+- 비용 발생 가능 외부 API 또는 외부 공개 변경
+- 사용자 명시 승인 전까지 실행하지 않는다.
+
+`STOP`:
+
+- secret/token/password/API key/raw secret 읽기, 출력, 요약, 전달 요청
+- 사용자 승인이 있어도 PM Agent, Local LLM, Codex가 실행하지 않는다.
+- raw secret은 읽거나 출력하거나 요약하거나 전달하지 않는다.
+- 사용자가 직접 수행할 안전 절차와 원문 값을 포함하지 않는 확인 명령만 안내한다.
+
+### 역할 분담
+
+Local LLM 담당:
+
+- 요약
+- 문서 초안
+- 커밋 메시지 초안
+- PR 본문 초안
+- diff 요약
+- 작업 계획
+- 파일 후보 추림
+- 검증 후보 추림
+
+Codex 담당:
+
+- 실제 코드 수정
+- 테스트 실패 수정
+- 구조 변경
+- repository 상태 확인이 필요한 작업
+- GitHub PR review 반영
+
+### PM/Sub-Agent 전달 규칙
+
+PM Agent는 `LOW` 작업은 자체 처리하고, `MEDIUM` 이상 작업만 Codex 또는 하위 에이전트로 넘긴다.
+
+Codex에 넘길 때는 전체 대화 전문을 전달하지 않고 다음 최소 컨텍스트만 전달한다.
+
+- 작업 ID
+- 분류 등급
+- 목표
+- 허용 파일 후보
+- 금지 사항
+- 검증 후보
+- 사용자 승인 필요 여부
+
 ## Short Command Mode
 
 Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
@@ -149,14 +235,16 @@ merge 준비 명령은 항상 이 확인을 먼저 수행한다.
 짧은 명령을 받으면 아래 순서로 하네스 문서를 선택한다.
 
 1. 명령 의도를 해석한다.
-2. `.harness/playbooks/`에서 작업 유형에 맞는 playbook을 선택한다.
-3. 필요한 경우 `.harness/skills/`에서 보조 skill을 선택한다.
-4. 파일 수정, 커밋, push 전에는 `.harness/checklists/`의 관련 checklist를 적용한다.
-5. 작업 결과는 `summarize-run` 형식으로 보고한다.
+2. Discord PM 흐름에서는 먼저 `.harness/playbooks/local-llm-first.md`로 작업을 분류한다.
+3. `.harness/playbooks/`에서 작업 유형에 맞는 playbook을 선택한다.
+4. 필요한 경우 `.harness/skills/`에서 보조 skill을 선택한다.
+5. 파일 수정, 커밋, push 전에는 `.harness/checklists/`의 관련 checklist를 적용한다.
+6. 작업 결과는 `summarize-run` 형식으로 보고한다.
 
 ### Playbook 선택 기준
 
 - `진행해줘`, `이어서 해줘`: `.harness/playbooks/implement-task.md`
+- Discord `#agent-pm` 짧은 명령 분류/전처리: `.harness/playbooks/local-llm-first.md`
 - `검증만 해줘`: `.harness/playbooks/verify-task.md`
 - `커밋해줘`: `.harness/playbooks/commit-task.md`
 - `PR 생성해줘`: `.harness/playbooks/create-pr.md`
