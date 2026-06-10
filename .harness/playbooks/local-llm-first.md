@@ -67,7 +67,6 @@ Local LLM은 Codex 호출 전 다음 항목을 만든다.
 
 - 배포
 - force push 또는 destructive git
-- secret/token/password/API key 처리
 - 권한/보안 정책 변경
 - 비용 발생 가능 외부 API 사용
 - 외부 공개 변경
@@ -76,6 +75,19 @@ Local LLM은 Codex 호출 전 다음 항목을 만든다.
 
 - 사용자 명시 승인 전까지 실행하지 않는다.
 - 승인 문구와 대상 범위를 먼저 확인한다.
+
+`STOP`:
+
+- secret/token/password/API key/raw secret 읽기, 출력, 요약, 전달 요청
+- raw secret을 Local LLM 또는 Codex 컨텍스트에 포함해야 하는 요청
+- secret 값을 대신 확인하거나 붙여 넣거나 변환해야 하는 요청
+
+처리 방식:
+
+- 사용자 승인이 있어도 실행하지 않는다.
+- PM Agent, Local LLM, Codex는 raw secret을 읽거나 출력하거나 요약하거나 전달하지 않는다.
+- 사용자가 직접 수행할 안전 절차와 확인 명령만 안내한다.
+- 필요한 경우 secret 이름, 저장 위치 유형, 검증 명령처럼 원문 값을 포함하지 않는 메타데이터만 다룬다.
 
 ## Codex 전달 형식
 
@@ -107,5 +119,5 @@ PM Agent는 Discord `#agent-pm`에 다음 구조로 보고할 수 있어야 한�
 
 - Local LLM이 실제 코드 수정 주체인 것처럼 취급하지 않는다.
 - CRITICAL 작업을 자동 실행하지 않는다.
-- secret/token/password/API key 원문을 Local LLM 또는 Codex 컨텍스트에 포함하지 않는다.
+- secret/token/password/API key/raw secret 원문을 읽거나 출력하거나 요약하거나 Local LLM 또는 Codex 컨텍스트에 포함하지 않는다.
 - 전체 대화 전문을 불필요하게 Codex에 전달하지 않는다.

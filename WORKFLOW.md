@@ -50,10 +50,17 @@ Discord `#agent-pm`에 짧은 명령이 들어오면 PM Agent는 Codex를 바로
 
 `CRITICAL`:
 
-- 배포, force push, destructive git, secret/token/password/API key 처리
+- 배포, force push, destructive git
 - 권한/보안 정책 변경
 - 비용 발생 가능 외부 API 또는 외부 공개 변경
 - 사용자 명시 승인 전까지 실행하지 않는다.
+
+`STOP`:
+
+- secret/token/password/API key/raw secret 읽기, 출력, 요약, 전달 요청
+- 사용자 승인이 있어도 PM Agent, Local LLM, Codex가 실행하지 않는다.
+- raw secret은 읽거나 출력하거나 요약하거나 전달하지 않는다.
+- 사용자가 직접 수행할 안전 절차와 원문 값을 포함하지 않는 확인 명령만 안내한다.
 
 ### 역할 분담
 
