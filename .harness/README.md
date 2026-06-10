@@ -14,10 +14,11 @@ Telegram은 Discord 구축 전 임시 소통 창구다. 최종 운영 기준은 
 6. `CRITICAL`은 사용자 명시 승인 전까지 실행하지 않는다.
 7. secret/token/password/API key/raw secret 요청은 승인 여부와 무관하게 `STOP` 처리하고, 사용자가 직접 수행할 안전 절차만 안내한다.
 8. `TASKS.md`에서 작업 ID, 상태, 범위, 검증, 금지사항을 확인한다.
-9. `.harness/playbooks/`에서 절차를 선택한다.
-10. 필요한 `.harness/skills/`를 적용한다.
-11. `.harness/checklists/`로 위험 항목을 점검한다.
-12. Discord 채널 보고 구조에 맞춰 변경 요약, 검증 결과, TODO 중심으로 보고한다.
+9. `.harness/checklists/scope-guard.md`로 작업 ID/목표와 changed files가 일치하는지 확인한다.
+10. `.harness/playbooks/`에서 절차를 선택한다.
+11. 필요한 `.harness/skills/`를 적용한다.
+12. `.harness/checklists/`로 위험 항목을 점검한다.
+13. Discord 채널 보고 구조에 맞춰 변경 요약, 검증 결과, TODO 중심으로 보고한다.
 
 ## 짧은 명령만 보내도 되는 이유
 
@@ -35,7 +36,7 @@ Telegram은 Discord 구축 전 임시 소통 창구다. 최종 운영 기준은 
 - `CONTEXT.md`: 레포 목적, OCB-001 목표, 하네스 운영 배경
 - `.harness/skills/`: 반복 작업의 세부 지침
 - `.harness/playbooks/`: 명령 유형별 절차
-- `.harness/checklists/`: 편집, 커밋, push, 보안 점검 기준
+- `.harness/checklists/`: scope guard, 편집, 커밋, push, 보안 점검 기준
 
 루트 문서와 하네스 문서가 충돌하면 `AGENTS.md`와 `TASKS.md`의 안전 규칙을 우선한다.
 
