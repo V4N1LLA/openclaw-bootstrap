@@ -2,12 +2,17 @@
 
 <!-- 80줄 이하로 유지한다. token, secret, password를 적지 않는다. -->
 
-- 현재 목표: TASK-011 MVP repo bootstrap 스크립트 초안 작성
-- 완료한 것: `scripts/init-mvp-repo.bat` dry-run 기본 스크립트 추가
-- 완료한 것: `APPLY=1`에서도 기존 `AGENTS.md`와 `codex/*.AGENTS.md`는 덮어쓰지 않고 SKIP하도록 수정
-- 완료한 것: `docs/MVP-BOOTSTRAP.md`에 보조 스크립트 사용법 추가
-- 참고: 대상 repo는 직접 생성하지 않고, `APPLY=1`일 때만 기존 대상 경로에 문서 파일을 준비함
-- 검증: `git diff --stat` 실행 완료
-- 현재 상태: TASK-011 DONE
-- 다음 단계: 다음 자동 루프에서 우선순위 규칙에 따라 다음 TODO 하나 선택
-- 추천 커밋 메시지: `:memo: scripts: MVP repo bootstrap 초안을 추가한다`
+- 현재 목표: OCB-CONTEXT-REFRESH openclaw-bootstrap 상태 문서 최신화
+- 현재 브랜치: `main`
+- 현재 상태: `main` HEAD는 `origin/main`과 동기화된 최신 상태
+- 완료한 것: OCB-001 완료 상태 반영
+- 완료한 것: PR #1, #2, #3, #4, #5 merge 완료 상태 반영
+- 완료한 것: CI gate 적용 완료 상태 반영
+- 완료한 것: Ollama fallback 적용 완료 상태 반영
+- 완료한 것: Local LLM-first 정책 적용 완료 상태 반영
+- 운영 전제: Telegram은 Discord 구축 전 임시 소통창구
+- 최종 운영 기준: Discord PM/Sub-Agent 하네스
+- 현재 작업 상태: OCB-CONTEXT-REFRESH DONE
+- 다음 우선 작업: OCB-SCOPE-GUARD
+- 검증 예정: `git status --short --branch`, `git diff --stat`, `rg -n "OCB-SCOPE-GUARD|Discord PM/Sub-Agent|Telegram|PR #1|PR #5|Local LLM-first|Ollama fallback|CI gate" context/current-focus.md context/HANDOFF.md TASKS.md`
+- 추천 커밋 메시지: `:memo: docs: OCB 현재 상태 문서를 최신화한다`

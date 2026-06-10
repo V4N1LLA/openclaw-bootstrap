@@ -442,4 +442,20 @@ Forbidden:
 
 ## 다음 작업
 
-다음 작업은 아직 등록되지 않았다.
+다음 우선 작업은 `OCB-SCOPE-GUARD`다.
+
+목표:
+- 작업 ID/PR 목적과 실제 changed files가 맞지 않으면 STOP하는 하네스 규칙 추가
+- 관련 없는 변경은 버리지 않고 별도 브랜치 후보로 보존하는 절차 문서화
+- CI-GATE PR에 gateway 런타임 변경이 섞였던 사례를 회고로 문서화
+
+전제:
+- Telegram은 Discord 구축 전 임시 소통창구다.
+- 최종 운영 기준은 Discord PM/Sub-Agent 하네스다.
+
+우선 반영 후보:
+- `AGENTS.md`
+- `WORKFLOW.md`
+- `TASKS.md`
+- `.harness/checklists/`
+- `.harness/playbooks/`
