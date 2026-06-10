@@ -30,6 +30,14 @@ type OllamaModelsResponse = {
   };
 };
 
+type OllamaChatAttempt = {
+  content?: string;
+  detail?: string;
+  durationMs: number;
+  quotaLimited: boolean;
+  status: number;
+};
+
 const LOCAL_ASSISTANT_SYSTEM_PROMPT = [
   "You are a local development assistant for Agent Workbench and OpenClaw Bootstrap.",
   "Help with documentation, summarization, commit message drafts, and repetitive work planning.",
@@ -76,6 +84,7 @@ export async function askOllama(
   modelOverride?: string
 ): Promise<string> {
   const selectedModel = modelOverride?.trim() || config.ollamaDefaultModel;
+  const fallbackModel = config.ollamaDefaultModel.trim();
 
   if (!selectedModel) {
     return [
@@ -150,6 +159,37 @@ export async function askOllama(
     console.error(
       `Ollama ask-local request failed: model=${selectedModel}, status=${response.status}, durationMs=${durationMs}`
     );
+
+    if (
+      isQuotaLimited(response.status, detail) &&
+      fallbackModel.length > 0 &&
+      fallbackModel !== selectedModel
+    ) {
+      console.warn(
+        `Ollama ask-local quota fallback started: from=${selectedModel}, to=${fallbackModel}`
+      );
+      const fallback = await tryAskOllamaWithModel(config, prompt, fallbackModel);
+
+      if (fallback.content) {
+        console.log(
+          `Ollama ask-local quota fallback succeeded: model=${fallbackModel}, status=${fallback.status}, durationMs=${fallback.durationMs}`
+        );
+        return fallback.content;
+      }
+
+      console.error(
+        `Ollama ask-local quota fallback failed: model=${fallbackModel}, status=${fallback.status}, durationMs=${fallback.durationMs}`
+      );
+
+      if (fallback.quotaLimited) {
+        return formatQuotaLimitedMessage(fallbackModel, fallback.detail);
+      }
+    }
+
+    if (isQuotaLimited(response.status, detail)) {
+      return formatQuotaLimitedMessage(selectedModel, detail);
+    }
+
     return [
       "Ollama 요청이 실패했습니다.",
       `상태: ${detail}`,
@@ -164,6 +204,71 @@ export async function askOllama(
   return content || "Ollama가 빈 응답을 반환했습니다.";
 }
 
+async function tryAskOllamaWithModel(
+  config: GatewayConfig,
+  prompt: string,
+  model: string
+): Promise<OllamaChatAttempt> {
+  const startedAt = Date.now();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), OLLAMA_REQUEST_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(new URL("chat/completions", ensureTrailingSlash(config.ollamaBaseUrl)), {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model,
+        messages: [
+          {
+            role: "system",
+            content: LOCAL_ASSISTANT_SYSTEM_PROMPT
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        stream: false
+      })
+    });
+
+    const payload = (await response.json()) as OllamaGenerateResponse;
+    const durationMs = Date.now() - startedAt;
+    const detail = payload.error?.message ?? `HTTP ${response.status}`;
+
+    if (!response.ok) {
+      return {
+        detail,
+        durationMs,
+        quotaLimited: isQuotaLimited(response.status, detail),
+        status: response.status
+      };
+    }
+
+    return {
+      content: payload.choices?.[0]?.message?.content?.trim() || "Ollama가 빈 응답을 반환했습니다.",
+      durationMs,
+      quotaLimited: false,
+      status: response.status
+    };
+  } catch (error) {
+    const durationMs = Date.now() - startedAt;
+
+    return {
+      detail: isAbortError(error) ? "request timed out" : "request failed",
+      durationMs,
+      quotaLimited: false,
+      status: 0
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 function ensureTrailingSlash(value: string): string {
   return value.endsWith("/") ? value : `${value}/`;
 }
@@ -174,4 +279,30 @@ function isPresent(value: string | undefined): value is string {
 
 function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === "AbortError";
+}
+
+function isQuotaLimited(status: number, detail: string): boolean {
+  const normalized = detail.toLowerCase();
+
+  return (
+    status === 402 ||
+    status === 429 ||
+    normalized.includes("quota") ||
+    normalized.includes("rate limit") ||
+    normalized.includes("rate_limit") ||
+    normalized.includes("too many requests") ||
+    normalized.includes("insufficient_quota")
+  );
+}
+
+function formatQuotaLimitedMessage(model: string, detail?: string): string {
+  return [
+    "모델 요청이 quota 또는 rate limit으로 거부되었습니다.",
+    `모델: ${model}`,
+    detail ? `상태: ${detail}` : undefined,
+    "잠시 후 다시 시도하거나 `/aw ask-local`의 `model` 옵션에 사용 가능한 로컬 모델을 지정하세요.",
+    "`/aw status`로 현재 Ollama 모델 목록을 먼저 확인할 수 있습니다."
+  ]
+    .filter(isPresent)
+    .join("\n");
 }
