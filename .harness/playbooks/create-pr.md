@@ -10,20 +10,22 @@
 
 1. `/mnt/c/dev/openclaw-bootstrap`에서 시작한다.
 2. `pwd`, `git branch --show-current`, `git status --short`를 확인한다.
-3. `.harness/checklists/before-pr.md`를 적용한다.
-4. 현재 브랜치가 작업 브랜치인지 확인한다.
-5. working tree가 clean인지 확인한다.
-6. upstream이 존재하는지 확인한다.
-7. 최신 커밋 SHA를 확인한다.
-8. `.env`, token, secret, password, API key 원문이 커밋에 포함되지 않았는지 확인한다.
-9. build/test 검증 결과를 확인한다.
-10. `prepare-pr` skill 기준으로 PR 제목과 본문을 작성한다.
-11. `gh --version`과 `gh auth status`로 GitHub CLI 사용 가능 여부를 확인한다.
-12. `gh`가 사용 가능하면 `gh pr create`로 PR을 생성한다.
-13. `gh`가 없거나 인증되지 않았으면 PR 생성 URL, 제목, 본문만 출력하고 멈춘다.
-14. PR 생성 후 PR URL을 보고한다.
-15. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태를 기록한다.
-16. 자동 리뷰를 기다리며 프로세스를 점유하지 않고 종료한다.
+3. `.harness/checklists/scope-guard.md`를 적용한다.
+4. `.harness/checklists/before-pr.md`를 적용한다.
+5. 현재 브랜치가 작업 브랜치인지 확인한다.
+6. working tree가 clean인지 확인한다.
+7. branch changed files가 PR 목적과 일치하는지 확인한다.
+8. upstream이 존재하는지 확인한다.
+9. 최신 커밋 SHA를 확인한다.
+10. `.env`, token, secret, password, API key 원문이 커밋에 포함되지 않았는지 확인한다.
+11. build/test 검증 결과를 확인한다.
+12. `prepare-pr` skill 기준으로 PR 제목과 본문을 작성한다.
+13. `gh --version`과 `gh auth status`로 GitHub CLI 사용 가능 여부를 확인한다.
+14. `gh`가 사용 가능하면 `gh pr create`로 PR을 생성한다.
+15. `gh`가 없거나 인증되지 않았으면 PR 생성 URL, 제목, 본문만 출력하고 멈춘다.
+16. PR 생성 후 PR URL을 보고한다.
+17. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태를 기록한다.
+18. 자동 리뷰를 기다리며 프로세스를 점유하지 않고 종료한다.
 
 ## Deferred PR Review Check
 
@@ -45,6 +47,7 @@
 - 사용자 명시 요청 없는 PR 생성 금지
 - 사용자 명시 승인 없는 push 금지
 - force push 금지
+- PR 목적과 branch changed files가 불일치한 상태의 PR 생성 금지
 - merge, squash merge, rebase merge 금지
 - deploy 자동화 금지
 - `.env` 포함 금지

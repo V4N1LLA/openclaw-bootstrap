@@ -10,6 +10,8 @@
 6. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태의 열린 PR이 기록되어 있으면 새 작업 시작 전 먼저 Deferred PR Review Check를 수행한다.
 7. 사용자가 작업 ID를 지정했다면 `TASKS.md`에서 해당 작업의 `Status`, `Scope`, `Validation`, `Forbidden`을 확인한다.
 8. 사용자가 작업 ID를 지정하지 않았다면 `TASKS.md`에서 다음 `TODO` 작업 하나만 선택한다.
+9. 작업 시작 전 `.harness/checklists/scope-guard.md` 기준으로 작업 ID, 목표, 허용 파일 범위를 확인한다.
+10. 시작 시점의 기존 changed files가 작업 Scope와 맞지 않으면 수정하지 않고 STOP 보고한다.
 
 ## Discord PM Local LLM-first 정책
 
@@ -107,10 +109,11 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 2. `TASKS.md`에서 `OCB-001-D`가 존재하는지 확인한다.
 3. `Status`가 `TODO` 또는 `IN_PROGRESS`인지 확인한다.
 4. `Status`가 `DONE`이면 재작업하지 말고 확인 질문을 한다.
-5. `Scope` 안에서만 구현한다.
-6. `Forbidden` 항목을 적용한다.
-7. `Validation` 명령을 실행할 수 있으면 실행한다.
-8. 완료 시 `TASKS.md`의 상태와 다음 작업을 갱신한다.
+5. `.harness/checklists/scope-guard.md`를 적용한다.
+6. `Scope` 안에서만 구현한다.
+7. `Forbidden` 항목을 적용한다.
+8. `Validation` 명령을 실행할 수 있으면 실행한다.
+9. 완료 시 `TASKS.md`의 상태와 다음 작업을 갱신한다.
 
 ### `OCB-001-D 검증만 해줘`
 
@@ -164,14 +167,15 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 1. 작업 시작 절차를 수행한다.
 2. `.harness/playbooks/create-pr.md`를 선택한다.
 3. `.harness/checklists/before-pr.md`를 적용한다.
-4. 현재 브랜치, working tree clean 여부, upstream, 최신 커밋 SHA, secret 포함 위험, build/test 검증 결과를 확인한다.
-5. push가 필요하면 사용자에게 먼저 보고하고, 명시 승인 없이 push하지 않는다.
-6. `gh`가 있고 인증되어 있으면 `gh pr create`로 PR 생성을 진행할 수 있다.
-7. `gh`가 없거나 인증되지 않았으면 PR 생성 URL, 제목, 본문만 출력하고 멈춘다.
-8. PR 생성 후 PR URL을 보고한다.
-9. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태를 기록한다.
-10. 자동 리뷰를 기다리며 프로세스를 점유하지 않고 작업을 종료한다.
-11. merge, squash merge, deploy는 별도 승인 전까지 실행하지 않는다.
+4. `.harness/checklists/scope-guard.md`를 적용해 PR 목적과 changed files가 일치하는지 확인한다.
+5. 현재 브랜치, working tree clean 여부, upstream, 최신 커밋 SHA, secret 포함 위험, build/test 검증 결과를 확인한다.
+6. push가 필요하면 사용자에게 먼저 보고하고, 명시 승인 없이 push하지 않는다.
+7. `gh`가 있고 인증되어 있으면 `gh pr create`로 PR 생성을 진행할 수 있다.
+8. `gh`가 없거나 인증되지 않았으면 PR 생성 URL, 제목, 본문만 출력하고 멈춘다.
+9. PR 생성 후 PR URL을 보고한다.
+10. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태를 기록한다.
+11. 자동 리뷰를 기다리며 프로세스를 점유하지 않고 작업을 종료한다.
+12. merge, squash merge, deploy는 별도 승인 전까지 실행하지 않는다.
 
 ### `OCB-001 PR 상태 알려줘`
 
@@ -209,6 +213,42 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 7. merge 후 PR URL, merge commit SHA, 최종 상태를 보고한다.
 
 작업 ID가 `TASKS.md`에 없으면 임의로 진행하지 말고 확인 질문을 한다.
+
+## Scope Guard
+
+작업 ID, 작업 목표, PR 목적, changed files가 서로 맞지 않으면 실행을 멈춘다.
+
+확인 시점:
+
+1. 작업 시작 전: 작업 ID, 목표, `TASKS.md` Scope, 허용 파일 범위를 비교한다.
+2. 파일 수정 전: 기존 changed files가 현재 작업 범위와 섞여 있지 않은지 확인한다.
+3. 커밋 전: staged files가 작업 Scope와 일치하는지 확인한다.
+4. PR 생성 전: PR 제목/본문 목적과 branch changed files가 일치하는지 확인한다.
+5. merge 전: PR changed files가 PR 목적과 일치하는지 다시 확인한다.
+
+STOP 기준:
+
+- 작업 ID와 관련 없는 파일이 changed files에 포함되어 있다.
+- PR 제목/본문 목적과 실제 변경 파일이 다르다.
+- docs-only PR에 runtime 또는 source 변경이 섞여 있다.
+- gateway runtime PR에 하네스 정책 변경이 설명 없이 섞여 있다.
+- `.env`, secret/token/password/API key 원문 또는 raw secret 위험이 있다.
+
+STOP 보고에는 다음을 포함한다.
+
+- 현재 작업 ID와 목표
+- 허용 파일 범위
+- 실제 changed files
+- mismatch 파일 목록
+- 관련 없는 변경을 별도 브랜치 후보로 보존할 제안
+
+관련 없는 변경은 삭제하거나 되돌리지 않는다. 별도 브랜치 후보 이름과 파일 목록을 보고하고, 사용자의 명시 지시가 있을 때만 분리한다.
+
+회고:
+
+- OCB-CI-GATE PR에서는 CI gate 목적과 별개인 gateway 런타임 변경이 섞일 수 있었다.
+- 이후 CI gate, docs-only, policy-only PR은 changed files를 목적과 비교하고 runtime 변경이 섞이면 STOP한다.
+- Discord PM/Sub-Agent 하네스에서도 Telegram 임시 운영 중에도 같은 기준을 적용한다.
 
 ## Deferred PR Review Check
 

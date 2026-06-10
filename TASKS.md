@@ -36,6 +36,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-CI-GATE | DONE | PR merge 전 missing checks를 없애기 위한 GitHub Actions CI gate 추가 |
 | OCB-OLLAMA-FALLBACK | DONE | ask-local Ollama 모델 실패 시 기본 모델 fallback 및 안내 추가 |
 | OCB-LOCAL-LLM-FIRST | DONE | Discord PM Local LLM-first 작업 분류/전처리 정책 추가 |
+| OCB-SCOPE-GUARD | DONE | 작업 ID/PR 목적과 changed files 불일치 시 STOP하는 하네스 규칙 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -417,6 +418,31 @@ Forbidden:
 - secret/token/password/API key 원문 출력 금지
 - `.env` 작성 또는 커밋 금지
 
+## OCB-SCOPE-GUARD: 작업 scope guard 규칙 추가
+
+Status: DONE
+
+Scope:
+- 작업 시작 전 작업 ID, 목표, 허용 파일 범위를 확인하는 규칙 추가
+- 커밋 전 staged 파일과 작업 Scope를 비교하는 규칙 추가
+- PR 생성 전 changed files와 PR 목적을 비교하는 규칙 추가
+- 작업 ID/PR 목적과 실제 changed files가 맞지 않으면 STOP하도록 문서화
+- 관련 없는 변경은 버리지 않고 별도 브랜치 후보로 보존하는 절차 문서화
+- CI-GATE PR에 gateway 런타임 변경이 섞였던 사례를 회고로 기록
+- Telegram은 Discord 구축 전 임시 소통창구이고 최종 운영 기준은 Discord PM/Sub-Agent 하네스임을 유지
+
+Validation:
+- `git status --short`
+- `rg -n "Scope Guard|scope mismatch|changed files|별도 브랜치 후보|CI-GATE" AGENTS.md WORKFLOW.md TASKS.md .harness`
+
+Forbidden:
+- 코드 구현 금지
+- 커밋 금지
+- push 금지
+- 패키지 설치 금지
+- secret/token/password/API key 원문 출력 금지
+- `.env` 작성 또는 커밋 금지
+
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리
 
 Status: DONE
@@ -442,20 +468,4 @@ Forbidden:
 
 ## 다음 작업
 
-다음 우선 작업은 `OCB-SCOPE-GUARD`다.
-
-목표:
-- 작업 ID/PR 목적과 실제 changed files가 맞지 않으면 STOP하는 하네스 규칙 추가
-- 관련 없는 변경은 버리지 않고 별도 브랜치 후보로 보존하는 절차 문서화
-- CI-GATE PR에 gateway 런타임 변경이 섞였던 사례를 회고로 문서화
-
-전제:
-- Telegram은 Discord 구축 전 임시 소통창구다.
-- 최종 운영 기준은 Discord PM/Sub-Agent 하네스다.
-
-우선 반영 후보:
-- `AGENTS.md`
-- `WORKFLOW.md`
-- `TASKS.md`
-- `.harness/checklists/`
-- `.harness/playbooks/`
+다음 작업은 아직 등록되지 않았다.
