@@ -117,8 +117,8 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 1. `PR 상태 확인해줘`는 조회 전용 단계로 먼저 수행한다.
 2. `문제 없으면 merge 해`는 조건부 merge 승인으로 해석한다.
 3. 조건부 merge 승인일 때도 Deferred PR Review Check를 먼저 수행한다.
-4. P0/P1/P2 리뷰, unresolved blocking review thread, failing build/test, dirty working tree, head SHA 불일치, `.env` 포함 위험이 있으면 merge를 중단하고 STOP 보고한다.
-5. PR이 open, mergeable, 최신 head SHA 기준이고 차단 리뷰와 검증 실패가 없을 때만 merge를 진행한다.
+4. P0/P1/P2 리뷰, unresolved blocking review thread, successful/completed 상태가 아닌 build/test, pending 또는 missing check, dirty working tree, head SHA 불일치, `.env` 포함 위험이 있으면 merge를 중단하고 STOP 보고한다.
+5. PR이 open, mergeable, 최신 head SHA 기준이고 차단 리뷰가 없으며 필요한 build/test checks가 모두 successful/completed일 때만 merge를 진행한다.
 6. merge 실행 시 merge 대상 PR 번호, base/head, head SHA, merge method를 보고한다.
 7. merge 후 PR URL, merge commit SHA, 최종 상태를 보고한다.
 

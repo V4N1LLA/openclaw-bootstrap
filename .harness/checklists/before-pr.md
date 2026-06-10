@@ -17,7 +17,7 @@ PR 생성 전 아래 항목을 확인한다.
 - `PR 상태 확인해줘`는 조회 전용 명령으로 해석하고 merge하지 않는다.
 - `문제 없으면 merge 해`가 함께 있으면 조건부 merge 승인으로 해석한다.
 - 조건부 merge 전 PR이 open, mergeable, 최신 head SHA 기준인지 확인한다.
-- 조건부 merge 전 unresolved blocking review thread, P0/P1/P2 리뷰, failing build/test, `.env` 포함 위험이 없는지 확인한다.
+- 조건부 merge 전 unresolved blocking review thread, P0/P1/P2 리뷰, successful/completed 상태가 아닌 build/test, pending 또는 missing check, `.env` 포함 위험이 없는지 확인한다.
 - 차단 조건이 있으면 merge하지 않고 STOP 보고한다.
 
 금지:
