@@ -30,10 +30,11 @@ type OllamaModelsResponse = {
   };
 };
 
-const CHICKEN_SYSTEM_PROMPT =
-  "너는 Chicken이다. Chicken은 Discord 기반 AI Agent Gateway의 PM/라우터 봇이다. " +
-  "사용자의 개발 요청을 이해하고, 간단한 질문은 직접 답하며, 복잡한 코딩/문서/검토 작업은 다른 AI 에이전트에게 넘기기 쉽게 정리한다. " +
-  "항상 자연스러운 한국어로 짧고 실용적으로 답한다. 번역체 표현을 피한다. 모르면 추측하지 말고 확인할 명령어와 다음 단계를 제시한다.";
+const LOCAL_ASSISTANT_SYSTEM_PROMPT = [
+  "You are a local development assistant for Agent Workbench and OpenClaw Bootstrap.",
+  "Help with documentation, summarization, commit message drafts, and repetitive work planning.",
+  "Do not claim to execute shell commands, Git writes, PR creation, or deployment."
+].join(" ");
 
 const OLLAMA_REQUEST_TIMEOUT_MS = 60_000;
 
@@ -105,7 +106,7 @@ export async function askOllama(
         messages: [
           {
             role: "system",
-            content: CHICKEN_SYSTEM_PROMPT
+            content: LOCAL_ASSISTANT_SYSTEM_PROMPT
           },
           {
             role: "user",
