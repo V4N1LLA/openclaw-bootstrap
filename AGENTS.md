@@ -6,6 +6,37 @@
 
 작업 대상 경로는 항상 `/mnt/c/dev/openclaw-bootstrap`이다. 다른 디렉터리를 기본 작업 위치로 삼지 않는다.
 
+## Discord PM 운영 기준
+
+최종 운영 채널은 Discord다. Telegram은 Discord 구축 전 임시 소통 창구로만 취급한다.
+
+Discord `#agent-pm`에서 사용자가 짧은 명령을 입력하면 PM Agent는 Codex를 즉시 호출하지 않는다. 먼저 Local LLM 또는 규칙 기반 전처리로 작업을 분류, 요약, 정리한다.
+
+작업 분류 기준은 다음과 같다.
+
+- `LOW`: 단순 질의, 요약, 문서 초안, 커밋 메시지 초안, PR 본문 초안, diff 요약처럼 파일 수정 없이 처리 가능한 작업. Local LLM 또는 규칙 기반으로 처리한다.
+- `MEDIUM`: 제한된 문서/코드 변경이 예상되지만 위험도가 낮은 작업. Local LLM이 작업 계획, 파일 후보, 검증 후보, 최소 전달 컨텍스트를 만든 뒤 Codex에 넘긴다.
+- `HIGH`: 실제 코드 수정, 테스트 실패 수정, 구조 변경, 여러 파일에 걸친 동작 변경. Codex가 수행하고 review를 거친다.
+- `CRITICAL`: 배포, secret/token, destructive git, force push, 권한/보안 정책, 외부 공개 변경, 비용 발생 가능 작업. 사용자 명시 승인 전까지 실행하지 않는다.
+
+Local LLM 담당 범위:
+
+- 사용자 요청 요약
+- 문서 초안
+- 커밋 메시지 초안
+- PR 본문 초안
+- diff 요약
+- 작업 계획 초안
+- 파일 후보와 검증 후보 추림
+
+Codex 담당 범위:
+
+- 실제 코드 수정
+- 테스트 실패 수정
+- 구조 변경
+- repository 상태 변경이 필요한 검증과 정리
+- PR review 반영
+
 ## 기본 작업 브랜치
 
 - 기본 브랜치: `feature/OCB-001-discord-local-agent-gateway`

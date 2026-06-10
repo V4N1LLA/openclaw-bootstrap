@@ -35,6 +35,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-001-MERGE-SAFETY | DONE | PR 상태 확인과 조건부 merge 승인 해석 규칙 추가 |
 | OCB-CI-GATE | DONE | PR merge 전 missing checks를 없애기 위한 GitHub Actions CI gate 추가 |
 | OCB-OLLAMA-FALLBACK | DONE | ask-local Ollama 모델 실패 시 기본 모델 fallback 및 안내 추가 |
+| OCB-LOCAL-LLM-FIRST | DONE | Discord PM Local LLM-first 작업 분류/전처리 정책 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -392,6 +393,29 @@ Forbidden:
 - `.env` 작성 또는 커밋 금지
 - 커밋 금지
 - push 금지
+
+## OCB-LOCAL-LLM-FIRST: Discord PM Local LLM-first 정책 추가
+
+Status: DONE
+
+Scope:
+- Discord `#agent-pm` 기준 PM/Sub-Agent 운영 흐름 문서화
+- PM Agent가 Codex 호출 전 Local LLM 또는 규칙 기반으로 작업을 분류/요약/전처리하도록 정책 추가
+- `LOW`, `MEDIUM`, `HIGH`, `CRITICAL` 작업 분류 기준 추가
+- Local LLM 담당 범위와 Codex 담당 범위 분리
+- `.harness` 문서가 Discord 채널 보고 구조와 연결될 수 있도록 보강
+
+Validation:
+- `git status --short`
+- `rg -n "OCB-LOCAL-LLM-FIRST|Local LLM-first|LOW|MEDIUM|HIGH|CRITICAL|#agent-pm|PM Agent" AGENTS.md WORKFLOW.md TASKS.md .harness`
+
+Forbidden:
+- 코드 구현 금지
+- 커밋 금지
+- push 금지
+- Discord bot runtime 변경 금지
+- secret/token/password/API key 원문 출력 금지
+- `.env` 작성 또는 커밋 금지
 
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리
 
