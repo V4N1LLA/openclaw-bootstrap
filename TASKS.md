@@ -485,12 +485,13 @@ Scope:
 - draft 상태에서 comment/review/thread 없음은 merge 근거가 될 수 없다고 명시
 - MEDIUM/HIGH PR은 ready 전환과 merge를 같은 run에서 수행하지 않도록 금지
 - ready 전환 이후 CI, review, comment, thread, changed files scope, mergeable 상태를 재확인해야 merge 가능하도록 절차화
+- ready 이후 재확인 항목을 PR 생성 전 checklist가 아니라 merge/ready-aftercare 경로로 분리
 - 관련 문서, playbook, checklist만 수정
 
 Validation:
 - `git status --short`
 - `git diff --check`
-- `rg -n "PR Ready Review Gate|Draft PR|ready 전환|same run|MEDIUM/HIGH|review/comment/thread" WORKFLOW.md TASKS.md context .harness`
+- `rg -n "PR Ready Review Gate|ready-aftercare|Draft PR|ready 전환|same run|MEDIUM/HIGH|review/comment/thread" WORKFLOW.md TASKS.md context .harness`
 
 Forbidden:
 - gateway 코드 변경 금지
