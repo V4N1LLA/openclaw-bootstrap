@@ -48,17 +48,20 @@ function selectPmRoute(
   preflight: PmPreflightResult,
   config: GatewayConfig
 ): PmRoute {
-  const target = chooseRouteTarget(command, preflight);
-  const channelId = getChannelIdForTarget(target, config);
-
   if (preflight.stops.length > 0) {
+    const target = "agent-log";
+    const channelId = getChannelIdForTarget(target, config);
+
     return {
       target,
       channelId,
-      reason: "preflight stopped; route only to log/setup handling",
+      reason: "preflight stopped; forced to audit/log route",
       status: "stopped"
     };
   }
+
+  const target = chooseRouteTarget(command, preflight);
+  const channelId = getChannelIdForTarget(target, config);
 
   if (!channelId) {
     return {
