@@ -37,6 +37,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-OLLAMA-FALLBACK | DONE | ask-local Ollama 모델 실패 시 기본 모델 fallback 및 안내 추가 |
 | OCB-LOCAL-LLM-FIRST | DONE | Discord PM Local LLM-first 작업 분류/전처리 정책 추가 |
 | OCB-SCOPE-GUARD | DONE | 작업 ID/PR 목적과 changed files 불일치 시 STOP하는 하네스 규칙 추가 |
+| OCB-002-A | DONE | Discord PM Command Intake + Runtime Preflight Guard 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -442,6 +443,37 @@ Forbidden:
 - 패키지 설치 금지
 - secret/token/password/API key 원문 출력 금지
 - `.env` 작성 또는 커밋 금지
+
+## OCB-002-A: Discord PM Command Intake + Runtime Preflight Guard
+
+Status: DONE
+
+Scope:
+- `/aw pm command:<text>` slash subcommand 추가
+- Discord PM command intake 응답 추가
+- runtime preflight guard 추가
+- `DISCORD_PM_CHANNEL_ID`가 설정된 경우 PM 채널 guard 적용
+- secret/token/password/API key/raw secret 요청 STOP 처리
+- force push, deploy, merge, push 등 critical 요청은 실행하지 않고 승인 필요 상태로 분류
+- LOW/MEDIUM/HIGH/CRITICAL/STOP 분류 결과와 다음 단계 안내 반환
+- 실제 shell command 실행, Git write, PR 생성, deploy, Codex/Sub-Agent 호출은 구현하지 않음
+- `.env.example`과 README에 PM intake 설정 및 사용법 문서화
+
+Validation:
+- `git status --short`
+- `cd gateway/discord-agent-gateway && npm run build`
+- `rg -n "pm|DISCORD_PM_CHANNEL_ID|Runtime guard|Preflight|STOP|CRITICAL" gateway/discord-agent-gateway/src gateway/discord-agent-gateway/README.md gateway/discord-agent-gateway/.env.example TASKS.md context`
+
+Forbidden:
+- shell command 실행 기능 구현 금지
+- Git write 자동화 금지
+- PR/deploy 자동화 금지
+- Codex/Sub-Agent 호출 자동화 금지
+- 패키지 설치 금지
+- secret/token/password/API key 원문 출력 금지
+- `.env` 읽기/작성/커밋 금지
+- 커밋 금지
+- push 금지
 
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리
 
