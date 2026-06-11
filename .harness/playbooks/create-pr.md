@@ -27,6 +27,13 @@
 17. `TASKS.md` 또는 `CONTEXT.md`에 `review_pending` 상태를 기록한다.
 18. 자동 리뷰를 기다리며 프로세스를 점유하지 않고 종료한다.
 
+## Draft PR 처리
+
+- Draft PR은 CI 실행과 변경 공유를 위한 중간 상태로만 취급한다.
+- Draft 상태의 comment, review, thread 없음은 merge 가능 근거가 아니다.
+- MEDIUM/HIGH PR은 ready 전환과 merge를 같은 run에서 수행하지 않는다.
+- ready 전환 후 별도 run에서 CI completed/success, review/comment/thread, changed files scope, mergeable 상태, 최신 head SHA를 다시 확인해야 merge 준비로 볼 수 있다.
+
 ## Deferred PR Review Check
 
 - PR 생성 직후 GitHub/Codex 자동 리뷰가 아직 도착하지 않을 수 있다.
@@ -49,6 +56,8 @@
 - force push 금지
 - PR 목적과 branch changed files가 불일치한 상태의 PR 생성 금지
 - merge, squash merge, rebase merge 금지
+- MEDIUM/HIGH PR의 ready 전환과 merge를 같은 run에서 수행 금지
+- ready 전환 후 재확인 없는 merge 금지
 - deploy 자동화 금지
 - `.env` 포함 금지
 - secret/token/password/API key 원문 출력 금지

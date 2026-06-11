@@ -212,6 +212,29 @@ Telegram에서 짧은 명령을 받으면 아래 규칙으로 해석한다.
 6. merge 실행 시 merge 대상 PR 번호, base/head, head SHA, merge method를 보고한다.
 7. merge 후 PR URL, merge commit SHA, 최종 상태를 보고한다.
 
+### PR Ready Review Gate
+
+Draft PR은 CI 실행과 변경 공유를 위한 중간 상태로만 취급한다.
+
+Draft 상태에서 comment, review, thread가 없다는 사실은 merge 가능 근거가 아니다. 자동 리뷰가 아직 도착하지 않았거나 ready 전환 전이라 review 대상이 아니었을 수 있기 때문이다.
+
+MEDIUM 또는 HIGH PR은 ready 전환과 merge를 같은 run에서 수행하지 않는다.
+
+1. draft PR을 ready로 전환하기 전 changed files scope, `.env` 포함 위험, secret/token/password/API key/raw secret 위험을 확인한다.
+2. 문제가 없으면 ready 전환까지만 수행하고 run을 종료한다.
+3. ready 전환 후 다음 사용자 명령 또는 별도 run에서 CI completed/success 상태를 다시 확인한다.
+4. ready 전환 후 review, comment, unresolved thread를 다시 확인한다.
+5. ready 전환 후 PR changed files가 PR 목적과 계속 일치하는지 다시 확인한다.
+6. ready 전환 후 mergeable 상태와 최신 head SHA를 다시 확인한다.
+7. 위 재확인 이후에만 별도 merge 승인 명령을 처리할 수 있다.
+
+STOP 기준:
+
+- MEDIUM/HIGH PR에서 ready 전환과 merge를 같은 run에서 요청한다.
+- draft 상태의 comment/review/thread 없음만 merge 근거로 삼으려 한다.
+- ready 전환 이후 CI, review, comment, thread, changed files scope, mergeable 상태 재확인 없이 merge하려 한다.
+- docs-only 또는 policy-only PR에 runtime/source 변경이 섞여 있다.
+
 작업 ID가 `TASKS.md`에 없으면 임의로 진행하지 말고 확인 질문을 한다.
 
 ## Scope Guard
@@ -289,7 +312,8 @@ merge 준비 명령은 항상 이 확인을 먼저 수행한다.
 - `커밋해줘`: `.harness/playbooks/commit-task.md`
 - `PR 생성해줘`: `.harness/playbooks/create-pr.md`
 - `PR 상태 알려줘`, `PR 상태 확인해줘`, `PR merge 준비해줘`: Deferred PR Review Check 적용
-- `문제 없으면 merge 해`: 조건부 merge 승인으로 해석하고, 상태 확인 결과가 안전할 때만 merge
+- `ready 전환해줘`: PR Ready Review Gate 적용
+- `문제 없으면 merge 해`: 조건부 merge 승인으로 해석하고, PR Ready Review Gate와 상태 확인 결과가 안전할 때만 merge
 - build/test 실패 복구: `.harness/playbooks/recover-failed-task.md`
 
 ### Skill 선택 기준
