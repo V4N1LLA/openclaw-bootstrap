@@ -2,19 +2,18 @@
 
 <!-- 80줄 이하로 유지한다. token, secret, password를 적지 않는다. -->
 
-- 현재 목표: OCB-002-A Discord PM Command Intake + Runtime Preflight Guard
-- 현재 브랜치: `main`
-- 현재 상태: 런타임/문서 변경 완료, 커밋/push 미수행
-- 완료한 것: `TASKS.md`에 OCB-002-A 등록 및 DONE 처리
-- 완료한 것: `/aw pm command:<text>` slash subcommand 추가
-- 완료한 것: PM command intake와 LOW/MEDIUM/HIGH/CRITICAL/STOP 분류 응답 추가
-- 완료한 것: `DISCORD_PM_CHANNEL_ID` 설정 시 PM 채널 guard 적용
-- 완료한 것: secret/token/password/API key/raw secret 요청 STOP 처리
-- 완료한 것: critical 요청은 실행하지 않고 승인 필요 상태로 분류
-- 완료한 것: 실제 shell/Git/PR/deploy/Codex/Sub-Agent 실행은 구현하지 않음
+- 현재 목표: OCB-PR-READY-REVIEW-GATE
+- 현재 브랜치: `feature/OCB-PR-READY-REVIEW-GATE`
+- 현재 상태: docs/policy only 변경 완료, draft PR 준비
+- 완료한 것: `TASKS.md`에 OCB-PR-READY-REVIEW-GATE 등록 및 DONE 처리
+- 완료한 것: Draft PR은 CI/공유용 상태로만 취급하도록 정책화
+- 완료한 것: draft 상태의 comment/review/thread 없음은 merge 근거가 아님을 명시
+- 완료한 것: MEDIUM/HIGH PR의 ready 전환과 merge를 같은 run에서 금지
+- 완료한 것: ready 전환 후 CI/review/comment/thread/scope/mergeable 재확인 절차를 ready-aftercare 경로로 분리
+- 완료한 것: PR #9 P2 리뷰에 따라 before-pr checklist에는 PR 생성 전 가능한 조건만 유지
 - 운영 전제: Telegram은 Discord 구축 전 임시 소통창구
 - 최종 운영 기준: Discord PM/Sub-Agent 하네스
-- 현재 작업 상태: OCB-002-A DONE
+- 현재 작업 상태: OCB-PR-READY-REVIEW-GATE DONE
 - 다음 작업: 아직 등록되지 않음
-- 검증 예정: `cd gateway/discord-agent-gateway && npm run build`, `rg -n "pm|DISCORD_PM_CHANNEL_ID|Runtime guard|Preflight|STOP|CRITICAL" gateway/discord-agent-gateway/src gateway/discord-agent-gateway/README.md gateway/discord-agent-gateway/.env.example TASKS.md context`
-- 추천 커밋 메시지: `:sparkles: feat: Discord PM command intake preflight를 추가한다`
+- 검증 예정: `git status --short`, `git diff --check`, `rg -n "PR Ready Review Gate|ready-aftercare|Draft PR|ready 전환|same run|MEDIUM/HIGH|review/comment/thread" WORKFLOW.md TASKS.md context .harness`
+- 추천 커밋 메시지: `:memo: docs: PR ready review gate 정책을 추가한다`

@@ -38,6 +38,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-LOCAL-LLM-FIRST | DONE | Discord PM Local LLM-first 작업 분류/전처리 정책 추가 |
 | OCB-SCOPE-GUARD | DONE | 작업 ID/PR 목적과 changed files 불일치 시 STOP하는 하네스 규칙 추가 |
 | OCB-002-A | DONE | Discord PM Command Intake + Runtime Preflight Guard 추가 |
+| OCB-PR-READY-REVIEW-GATE | DONE | Draft PR ready 전환과 merge 사이의 review gate 정책 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -472,6 +473,34 @@ Forbidden:
 - 패키지 설치 금지
 - secret/token/password/API key 원문 출력 금지
 - `.env` 읽기/작성/커밋 금지
+- 커밋 금지
+- push 금지
+
+## OCB-PR-READY-REVIEW-GATE: PR ready review gate 정책
+
+Status: DONE
+
+Scope:
+- Draft PR은 CI/공유용 상태로만 취급한다고 문서화
+- draft 상태에서 comment/review/thread 없음은 merge 근거가 될 수 없다고 명시
+- MEDIUM/HIGH PR은 ready 전환과 merge를 같은 run에서 수행하지 않도록 금지
+- ready 전환 이후 CI, review, comment, thread, changed files scope, mergeable 상태를 재확인해야 merge 가능하도록 절차화
+- ready 이후 재확인 항목을 PR 생성 전 checklist가 아니라 merge/ready-aftercare 경로로 분리
+- 관련 문서, playbook, checklist만 수정
+
+Validation:
+- `git status --short`
+- `git diff --check`
+- `rg -n "PR Ready Review Gate|ready-aftercare|Draft PR|ready 전환|same run|MEDIUM/HIGH|review/comment/thread" WORKFLOW.md TASKS.md context .harness`
+
+Forbidden:
+- gateway 코드 변경 금지
+- Discord command 재등록 금지
+- Codex/Sub-Agent 실행 금지
+- 패키지 설치 금지
+- secret/token/password/API key 원문 출력 금지
+- `.env` 읽기/작성/커밋 금지
+- merge 자동화 변경 금지
 - 커밋 금지
 - push 금지
 
