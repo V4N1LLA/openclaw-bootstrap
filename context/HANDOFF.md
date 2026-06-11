@@ -2,18 +2,18 @@
 
 <!-- 80줄 이하로 유지한다. token, secret, password를 적지 않는다. -->
 
-- 현재 목표: OCB-PR-READY-REVIEW-GATE
-- 현재 브랜치: `feature/OCB-PR-READY-REVIEW-GATE`
-- 현재 상태: docs/policy only 변경 완료, draft PR 준비
-- 완료한 것: `TASKS.md`에 OCB-PR-READY-REVIEW-GATE 등록 및 DONE 처리
-- 완료한 것: Draft PR은 CI/공유용 상태로만 취급하도록 정책화
-- 완료한 것: draft 상태의 comment/review/thread 없음은 merge 근거가 아님을 명시
-- 완료한 것: MEDIUM/HIGH PR의 ready 전환과 merge를 같은 run에서 금지
-- 완료한 것: ready 전환 후 CI/review/comment/thread/scope/mergeable 재확인 절차를 ready-aftercare 경로로 분리
-- 완료한 것: PR #9 P2 리뷰에 따라 before-pr checklist에는 PR 생성 전 가능한 조건만 유지
+- 현재 목표: OCB-002-B Discord Sub-Agent Routing Skeleton
+- 현재 브랜치: `feature/OCB-002-B`
+- 현재 상태: routing skeleton 구현 완료, draft PR 준비
+- 완료한 것: `TASKS.md`에 OCB-002-B 등록 및 DONE 처리
+- 완료한 것: PM preflight 결과 기반 Sub-Agent routing skeleton 추가
+- 완료한 것: 대상 후보 채널 `agent-dev-local`, `agent-docs-local`, `agent-review`, `agent-ops`, `agent-log` 추가
+- 완료한 것: 채널 ID env가 없으면 `setup-needed` 상태로 안내
+- 완료한 것: work card 초안 메시지 생성 구조 추가
+- 완료한 것: 실제 Codex/Local LLM/shell/Git write/fan-in/자동 PR 실행은 구현하지 않음
 - 운영 전제: Telegram은 Discord 구축 전 임시 소통창구
 - 최종 운영 기준: Discord PM/Sub-Agent 하네스
-- 현재 작업 상태: OCB-PR-READY-REVIEW-GATE DONE
+- 현재 작업 상태: OCB-002-B DONE
 - 다음 작업: 아직 등록되지 않음
-- 검증 예정: `git status --short`, `git diff --check`, `rg -n "PR Ready Review Gate|ready-aftercare|Draft PR|ready 전환|same run|MEDIUM/HIGH|review/comment/thread" WORKFLOW.md TASKS.md context .harness`
-- 추천 커밋 메시지: `:memo: docs: PR ready review gate 정책을 추가한다`
+- 검증 예정: `cd gateway/discord-agent-gateway && npm run build`, PM routing smoke test, `rg -n "Sub-Agent routing|setup-needed|agent-dev-local|agent-docs-local|agent-review|agent-ops|agent-log" gateway/discord-agent-gateway/src gateway/discord-agent-gateway/README.md gateway/discord-agent-gateway/.env.example TASKS.md context`
+- 추천 커밋 메시지: `:sparkles: feat: Discord sub-agent routing skeleton을 추가한다`

@@ -1,6 +1,7 @@
 import type { GatewayConfig } from "../config.js";
+import { createPmRoutingDraft } from "./pmRouting.js";
 
-type PmClassification = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" | "STOP";
+export type PmClassification = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" | "STOP";
 
 type PmPreflightInput = {
   channelId?: string | null;
@@ -8,7 +9,7 @@ type PmPreflightInput = {
   config: GatewayConfig;
 };
 
-type PmPreflightResult = {
+export type PmPreflightResult = {
   classification: PmClassification;
   stops: string[];
   warnings: string[];
@@ -20,6 +21,7 @@ const MAX_COMMAND_LENGTH = 1_500;
 export function createPmIntakeResponse(input: PmPreflightInput): string {
   const result = runPmPreflight(input);
   const nextStep = formatNextStep(result);
+  const routingDraft = createPmRoutingDraft(input.command, result, input.config);
 
   return [
     "Discord PM command intake",
@@ -30,6 +32,8 @@ export function createPmIntakeResponse(input: PmPreflightInput): string {
     "Runtime guard",
     ...formatList("Stops", result.stops),
     ...formatList("Warnings", result.warnings),
+    "",
+    routingDraft,
     "",
     "Next step",
     nextStep
