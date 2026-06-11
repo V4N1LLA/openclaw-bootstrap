@@ -24,4 +24,15 @@ export const awCommand = new SlashCommandBuilder()
     subcommand
       .setName("status")
       .setDescription("Check Gateway, Ollama, and Agent Workbench status")
+  )
+  .addSubcommand((subcommand) =>
+    subcommand
+      .setName("pm")
+      .setDescription("Intake a Discord PM command without executing it")
+      .addStringOption((option) =>
+        option
+          .setName("command")
+          .setDescription("Command text from #agent-pm")
+          .setRequired(true)
+      )
   );
