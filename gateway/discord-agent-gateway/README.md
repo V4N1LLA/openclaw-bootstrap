@@ -25,6 +25,11 @@ Discord + Ollama 기반 로컬 Agent Gateway scaffold다.
 | `DISCORD_CLIENT_ID` | Discord application client id | 비워 둠 |
 | `DISCORD_GUILD_ID` | 개발 중 명령을 등록할 Discord guild id | 비워 둠 |
 | `DISCORD_PM_CHANNEL_ID` | `/aw pm`을 허용할 Discord PM 채널 id. 비워 두면 채널 guard는 경고만 표시한다. | 비워 둠 |
+| `DISCORD_AGENT_DEV_LOCAL_CHANNEL_ID` | 코드/런타임 작업 후보를 받을 `#agent-dev-local` 채널 id | 비워 둠 |
+| `DISCORD_AGENT_DOCS_LOCAL_CHANNEL_ID` | 문서/정책 작업 후보를 받을 `#agent-docs-local` 채널 id | 비워 둠 |
+| `DISCORD_AGENT_REVIEW_CHANNEL_ID` | PR review/comment/thread 작업 후보를 받을 `#agent-review` 채널 id | 비워 둠 |
+| `DISCORD_AGENT_OPS_CHANNEL_ID` | CRITICAL 승인/운영 작업 후보를 받을 `#agent-ops` 채널 id | 비워 둠 |
+| `DISCORD_AGENT_LOG_CHANNEL_ID` | LOW/STOP 또는 감사 로그 후보를 받을 `#agent-log` 채널 id | 비워 둠 |
 | `OLLAMA_BASE_URL` | Ollama OpenAI-compatible endpoint | `http://localhost:11434/v1` |
 | `OLLAMA_DEFAULT_MODEL` | `/aw ask-local`과 `/aw status`에서 사용할 기본 모델 | `qwen2.5-coder:3b` |
 | `AGENT_WORKBENCH_BASE_URL` | Agent Workbench 로컬 API 기준 URL | `http://127.0.0.1:3000` |
@@ -127,6 +132,20 @@ Preflight guard는 다음을 확인한다.
 - force push, deploy, merge, push 등 명시 승인이 필요한 critical 요청
 - 작업 분류: `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`, `STOP`
 
+Sub-Agent routing skeleton은 preflight 결과에 따라 work card 초안과 대상 후보 채널을 계산한다.
+
+대상 후보:
+
+- `#agent-dev-local`
+- `#agent-docs-local`
+- `#agent-review`
+- `#agent-ops`
+- `#agent-log`
+
+채널 ID 환경 변수가 없으면 실제 라우팅을 실행하지 않고 `setup-needed` 상태를 안내한다.
+
+이 단계는 메시지 전송, Codex 실행, Local LLM 실행, shell/Git write, fan-in 결과 회수, 자동 커밋/PR 생성을 수행하지 않는다.
+
 예:
 
 ```text
@@ -141,6 +160,7 @@ Preflight guard는 다음을 확인한다.
 - Ollama OpenAI-compatible chat completions 클라이언트
 - Agent Workbench health 클라이언트 자리
 - Discord PM command intake와 runtime preflight guard
+- Discord Sub-Agent routing skeleton과 work card 초안 생성
 
 ## 로컬 LLM 역할
 

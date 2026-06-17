@@ -1,17 +1,16 @@
 # 현재 작업 초점
 
-- 현재 작업: OCB-PR-READY-REVIEW-GATE
-- 현재 브랜치: `feature/OCB-PR-READY-REVIEW-GATE`
-- 현재 상태: docs/policy only 변경 진행
-- 작업 목표: draft PR ready 전환과 merge 사이의 review gate를 명확히 문서화
-- 완료한 것: Draft PR은 CI/공유용 상태로만 취급하도록 정책화
-- 완료한 것: draft 상태의 comment/review/thread 없음은 merge 근거가 아님을 명시
-- 완료한 것: MEDIUM/HIGH PR은 ready 전환과 merge를 같은 run에서 금지
-- 완료한 것: ready 전환 후 CI/review/comment/thread/scope/mergeable 재확인 절차를 ready-aftercare 경로로 분리
-- 완료한 것: PR #9 P2 리뷰에 따라 before-pr checklist에는 PR 생성 전 가능한 조건만 유지
+- 현재 작업: OCB-002-B Discord Sub-Agent Routing Skeleton
+- 현재 브랜치: `feature/OCB-002-B`
+- 현재 상태: routing skeleton 구현 완료, draft PR 준비
+- 작업 목표: PM preflight 결과를 기반으로 Sub-Agent 대상 후보와 work card 초안만 생성
+- 완료한 것: 대상 후보 채널 `agent-dev-local`, `agent-docs-local`, `agent-review`, `agent-ops`, `agent-log` 추가
+- 완료한 것: 채널 ID env가 없으면 `setup-needed` 상태로 안내
+- 완료한 것: work card 초안 메시지 생성 구조 추가
+- 완료한 것: 실제 Codex/Local LLM/shell/Git write/fan-in/자동 PR 실행은 구현하지 않음
 - 운영 전제: Telegram은 Discord 구축 전 임시 소통창구
 - 최종 운영 기준: Discord PM/Sub-Agent 하네스
-- 수정 허용 범위: `TASKS.md`, `WORKFLOW.md`, `context/current-focus.md`, `context/HANDOFF.md`, `.harness/checklists/*.md`, `.harness/playbooks/*.md`
-- 금지사항: gateway 코드 변경 금지, Discord command 재등록 금지, Codex/Sub-Agent 실행 금지, `.env` 읽기/작성/커밋 금지, secret/token/password/API key 원문 출력 금지
-- 검증 명령: `git status --short`, `git diff --check`, `rg -n "PR Ready Review Gate|ready-aftercare|Draft PR|ready 전환|same run|MEDIUM/HIGH|review/comment/thread" WORKFLOW.md TASKS.md context .harness`
+- 수정 허용 범위: `gateway/discord-agent-gateway/src/`, `gateway/discord-agent-gateway/.env.example`, `gateway/discord-agent-gateway/README.md`, `TASKS.md`, `context/current-focus.md`, `context/HANDOFF.md`
+- 금지사항: 실제 Discord channel send 금지, Codex/Sub-Agent 호출 금지, Local LLM 실행 금지, shell/Git write 자동화 금지, fan-in 구현 금지, `.env` 읽기/작성/커밋 금지, secret/token/password/API key 원문 출력 금지
+- 검증 명령: `cd gateway/discord-agent-gateway && npm run build`, PM routing smoke test, `rg -n "Sub-Agent routing|setup-needed|agent-dev-local|agent-docs-local|agent-review|agent-ops|agent-log" gateway/discord-agent-gateway/src gateway/discord-agent-gateway/README.md gateway/discord-agent-gateway/.env.example TASKS.md context`
 - 마지막 업데이트: 2026-06-11

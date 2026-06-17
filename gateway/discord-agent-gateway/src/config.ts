@@ -5,6 +5,11 @@ export type GatewayConfig = {
   discordClientId?: string;
   discordGuildId?: string;
   discordPmChannelId?: string;
+  discordAgentDevLocalChannelId?: string;
+  discordAgentDocsLocalChannelId?: string;
+  discordAgentReviewChannelId?: string;
+  discordAgentOpsChannelId?: string;
+  discordAgentLogChannelId?: string;
   ollamaBaseUrl: string;
   ollamaDefaultModel: string;
   agentWorkbenchBaseUrl: string;
@@ -16,6 +21,11 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): GatewayConfig 
     discordClientId: env.DISCORD_CLIENT_ID,
     discordGuildId: env.DISCORD_GUILD_ID,
     discordPmChannelId: env.DISCORD_PM_CHANNEL_ID,
+    discordAgentDevLocalChannelId: env.DISCORD_AGENT_DEV_LOCAL_CHANNEL_ID,
+    discordAgentDocsLocalChannelId: env.DISCORD_AGENT_DOCS_LOCAL_CHANNEL_ID,
+    discordAgentReviewChannelId: env.DISCORD_AGENT_REVIEW_CHANNEL_ID,
+    discordAgentOpsChannelId: env.DISCORD_AGENT_OPS_CHANNEL_ID,
+    discordAgentLogChannelId: env.DISCORD_AGENT_LOG_CHANNEL_ID,
     ollamaBaseUrl: env.OLLAMA_BASE_URL ?? "http://localhost:11434/v1",
     ollamaDefaultModel:
       env.OLLAMA_DEFAULT_MODEL ?? env.OLLAMA_MODEL ?? "qwen2.5-coder:3b",

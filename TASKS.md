@@ -39,6 +39,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-SCOPE-GUARD | DONE | 작업 ID/PR 목적과 changed files 불일치 시 STOP하는 하네스 규칙 추가 |
 | OCB-002-A | DONE | Discord PM Command Intake + Runtime Preflight Guard 추가 |
 | OCB-PR-READY-REVIEW-GATE | DONE | Draft PR ready 전환과 merge 사이의 review gate 정책 추가 |
+| OCB-002-B | DONE | Discord Sub-Agent Routing Skeleton 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -503,6 +504,37 @@ Forbidden:
 - merge 자동화 변경 금지
 - 커밋 금지
 - push 금지
+
+## OCB-002-B: Discord Sub-Agent Routing Skeleton
+
+Status: DONE
+
+Scope:
+- PM preflight 결과에 따라 대상 후보 채널을 고르는 routing skeleton 추가
+- 대상 후보: `agent-dev-local`, `agent-docs-local`, `agent-review`, `agent-ops`, `agent-log`
+- work card 초안 메시지 생성 구조 추가
+- 대상 채널 ID env가 없으면 실행하지 않고 `setup-needed` 상태로 안내
+- `.env.example`과 README에 필요한 채널 ID 설정만 문서화
+- 실제 Codex 실행, Local LLM 실행, shell/Git write 실행, fan-in 결과 회수, 자동 커밋/PR 생성은 구현하지 않음
+
+Validation:
+- `git status --short`
+- `cd gateway/discord-agent-gateway && npm run build`
+- `node --experimental-strip-types --input-type=module` 기반 PM routing smoke test
+- `rg -n "Sub-Agent routing|setup-needed|agent-dev-local|agent-docs-local|agent-review|agent-ops|agent-log" gateway/discord-agent-gateway/src gateway/discord-agent-gateway/README.md gateway/discord-agent-gateway/.env.example TASKS.md context`
+
+Forbidden:
+- 실제 Discord channel send 금지
+- Codex/Sub-Agent 호출 자동화 금지
+- Local LLM 실행 자동화 금지
+- shell command 실행 기능 구현 금지
+- Git write 자동화 금지
+- PR/deploy 자동화 금지
+- fan-in 결과 회수 구현 금지
+- `.env` 읽기/작성/커밋 금지
+- secret/token/password/API key 원문 출력 금지
+- ready 전환 금지
+- merge 금지
 
 ## OCB-001-HARNESS: 하네스 운영 가이드라인 정리
 
