@@ -40,6 +40,7 @@ OCB-001 Discord + Ollama Local Agent Gateway
 | OCB-002-A | DONE | Discord PM Command Intake + Runtime Preflight Guard 추가 |
 | OCB-PR-READY-REVIEW-GATE | DONE | Draft PR ready 전환과 merge 사이의 review gate 정책 추가 |
 | OCB-002-B | DONE | Discord Sub-Agent Routing Skeleton 추가 |
+| OCB-002-C | DONE | Discord Work Card Dispatch 추가 |
 
 ## OCB-001-A: 에이전트 작업 지시 파일 생성
 
@@ -531,6 +532,40 @@ Forbidden:
 - Git write 자동화 금지
 - PR/deploy 자동화 금지
 - fan-in 결과 회수 구현 금지
+- `.env` 읽기/작성/커밋 금지
+- secret/token/password/API key 원문 출력 금지
+- ready 전환 금지
+- merge 금지
+
+## OCB-002-C: Discord Work Card Dispatch
+
+Status: DONE
+
+Scope:
+- PM routing 결과가 `ready`이면 설정된 대상 Sub-Agent 채널에 work card 1건 전송
+- `stopped`이면 실행 후보 채널로 보내지 않고 `agent-log`에 audit card만 전송
+- `setup-needed`이면 채널 전송 없이 누락된 채널 설정 안내
+- `CRITICAL`이면 `agent-ops`에 승인 필요 card만 전송하고 실행하지 않음
+- PM 응답에 대상 채널, dispatch 결과, 실행 여부 표시
+- 채널 ID 미설정 또는 접근 실패 시 안전하게 STOP하고 이유 반환
+- `.env.example`과 README에 채널 ID 설정법 반영
+- build 및 routing/dispatch smoke test 추가
+
+Validation:
+- `git status --short`
+- `cd gateway/discord-agent-gateway && npm run build`
+- `cd gateway/discord-agent-gateway && npm run smoke:pm-dispatch`
+- `git diff --check`
+- changed files scope 확인
+
+Forbidden:
+- Codex 실행 금지
+- Local LLM 실행 금지
+- shell/Git write 실행 금지
+- Sub-Agent 실제 작업 수행 금지
+- fan-in 및 결과 회수 금지
+- 자동 커밋/PR/merge 실행 금지
+- 재시도 스케줄러 구현 금지
 - `.env` 읽기/작성/커밋 금지
 - secret/token/password/API key 원문 출력 금지
 - ready 전환 금지

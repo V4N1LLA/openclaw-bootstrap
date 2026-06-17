@@ -1,16 +1,16 @@
 import type { GatewayConfig } from "../config.js";
 import type { PmPreflightResult } from "./pmIntake.js";
 
-type PmRouteTarget =
+export type PmRouteTarget =
   | "agent-dev-local"
   | "agent-docs-local"
   | "agent-review"
   | "agent-ops"
   | "agent-log";
 
-type PmRouteStatus = "ready" | "setup-needed" | "stopped";
+export type PmRouteStatus = "ready" | "setup-needed" | "stopped";
 
-type PmRoute = {
+export type PmRoute = {
   target: PmRouteTarget;
   channelId?: string;
   reason: string;
@@ -23,27 +23,45 @@ type PmWorkCardInput = {
   route: PmRoute;
 };
 
+export type PmRoutingPlan = {
+  route: PmRoute;
+  workCard: string;
+};
+
 export function createPmRoutingDraft(
   command: string,
   preflight: PmPreflightResult,
   config: GatewayConfig
 ): string {
-  const route = selectPmRoute(command, preflight, config);
-  const workCard = createWorkCardDraft({ command, preflight, route });
+  const plan = createPmRoutingPlan(command, preflight, config);
 
   return [
     "Sub-Agent routing",
-    `Status: ${route.status}`,
-    `Target: #${route.target}`,
-    `Channel configured: ${route.channelId ? "yes" : "no"}`,
-    `Reason: ${route.reason}`,
+    `Status: ${plan.route.status}`,
+    `Target: #${plan.route.target}`,
+    `Channel configured: ${plan.route.channelId ? "yes" : "no"}`,
+    `Reason: ${plan.route.reason}`,
     "",
     "Work card draft",
-    workCard
+    plan.workCard
   ].join("\n");
 }
 
-function selectPmRoute(
+export function createPmRoutingPlan(
+  command: string,
+  preflight: PmPreflightResult,
+  config: GatewayConfig
+): PmRoutingPlan {
+  const route = selectPmRoute(command, preflight, config);
+  const workCard = createWorkCardDraft({ command, preflight, route });
+
+  return {
+    route,
+    workCard
+  };
+}
+
+export function selectPmRoute(
   command: string,
   preflight: PmPreflightResult,
   config: GatewayConfig
@@ -131,7 +149,7 @@ function getChannelIdForTarget(
   return config.discordAgentLogChannelId;
 }
 
-function createWorkCardDraft(input: PmWorkCardInput): string {
+export function createWorkCardDraft(input: PmWorkCardInput): string {
   return [
     `- title: ${input.preflight.summary}`,
     `- classification: ${input.preflight.classification}`,

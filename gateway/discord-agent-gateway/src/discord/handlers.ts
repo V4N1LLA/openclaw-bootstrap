@@ -3,7 +3,12 @@ import type { GatewayConfig } from "../config.js";
 import { getAgentWorkbenchStatus } from "../services/agentWorkbench.js";
 import { askOllama, getOllamaStatus } from "../services/ollama.js";
 import { sendChunkedReply } from "./messages.js";
-import { createPmIntakeResponse } from "./pmIntake.js";
+import { createPmIntakeResponse, createPmPreflightResult } from "./pmIntake.js";
+import {
+  createDiscordChannelSender,
+  dispatchPmWorkCard,
+  formatPmDispatchSummary
+} from "./pmDispatch.js";
 
 export async function handleAwCommand(
   interaction: ChatInputCommandInteraction,
@@ -56,12 +61,26 @@ export async function handleAwCommand(
   if (subcommand === "pm") {
     const command = interaction.options.getString("command", true);
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+    const preflight = createPmPreflightResult({
+      channelId: interaction.channelId,
+      command,
+      config
+    });
+    const dispatchPlan = await dispatchPmWorkCard(
+      command,
+      preflight,
+      config,
+      createDiscordChannelSender(interaction.client)
+    );
     const intakeMessage = createPmIntakeResponse({
       channelId: interaction.channelId,
       command,
       config
     });
-    await sendChunkedReply(interaction, intakeMessage);
+    await sendChunkedReply(
+      interaction,
+      [intakeMessage, "", formatPmDispatchSummary(dispatchPlan)].join("\n")
+    );
   }
 }
 

@@ -132,7 +132,7 @@ Preflight guard는 다음을 확인한다.
 - force push, deploy, merge, push 등 명시 승인이 필요한 critical 요청
 - 작업 분류: `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`, `STOP`
 
-Sub-Agent routing skeleton은 preflight 결과에 따라 work card 초안과 대상 후보 채널을 계산한다.
+Sub-Agent routing은 preflight 결과에 따라 work card 초안과 대상 채널을 계산한다.
 
 대상 후보:
 
@@ -142,9 +142,19 @@ Sub-Agent routing skeleton은 preflight 결과에 따라 work card 초안과 대
 - `#agent-ops`
 - `#agent-log`
 
-채널 ID 환경 변수가 없으면 실제 라우팅을 실행하지 않고 `setup-needed` 상태를 안내한다.
+채널 ID 환경 변수가 없으면 채널 전송 없이 `setup-needed` 상태와 누락된 대상 채널 설정을 안내한다.
 
-이 단계는 메시지 전송, Codex 실행, Local LLM 실행, shell/Git write, fan-in 결과 회수, 자동 커밋/PR 생성을 수행하지 않는다.
+Dispatch 동작:
+
+- `ready`: 설정된 대상 Sub-Agent 채널에 work card 1건을 전송한다.
+- `stopped`: 실행 후보 채널로 보내지 않고 `#agent-log`에 audit card 1건만 전송한다.
+- `setup-needed`: 채널 전송 없이 누락된 채널 설정을 안내한다.
+- `CRITICAL`: `#agent-ops`에 승인 필요 card 1건만 전송하고 실행하지 않는다.
+- 채널 접근 실패나 전송 실패는 안전하게 `stopped`로 보고한다.
+
+PM 응답에는 대상 채널, dispatch 결과, 채널 전송 여부, 실행 시작 여부가 표시된다.
+
+이 단계는 Codex 실행, Local LLM 실행, shell/Git write, Sub-Agent 실제 작업 수행, fan-in 결과 회수, 자동 커밋/PR 생성, 재시도 스케줄러를 수행하지 않는다.
 
 예:
 
@@ -160,7 +170,7 @@ Sub-Agent routing skeleton은 preflight 결과에 따라 work card 초안과 대
 - Ollama OpenAI-compatible chat completions 클라이언트
 - Agent Workbench health 클라이언트 자리
 - Discord PM command intake와 runtime preflight guard
-- Discord Sub-Agent routing skeleton과 work card 초안 생성
+- Discord Sub-Agent routing과 work/audit/approval card dispatch
 
 ## 로컬 LLM 역할
 

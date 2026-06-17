@@ -19,7 +19,7 @@ export type PmPreflightResult = {
 const MAX_COMMAND_LENGTH = 1_500;
 
 export function createPmIntakeResponse(input: PmPreflightInput): string {
-  const result = runPmPreflight(input);
+  const result = createPmPreflightResult(input);
   const nextStep = formatNextStep(result);
   const routingDraft = createPmRoutingDraft(input.command, result, input.config);
 
@@ -40,7 +40,7 @@ export function createPmIntakeResponse(input: PmPreflightInput): string {
   ].join("\n");
 }
 
-function runPmPreflight(input: PmPreflightInput): PmPreflightResult {
+export function createPmPreflightResult(input: PmPreflightInput): PmPreflightResult {
   const command = input.command.trim();
   const warnings: string[] = [];
   const stops: string[] = [];
@@ -112,11 +112,21 @@ function summarizeCommand(command: string): string {
     return "empty command";
   }
 
+  if (containsSensitiveRequest(trimmed)) {
+    return "sensitive command redacted";
+  }
+
   if (trimmed.length <= 140) {
     return trimmed;
   }
 
   return `${trimmed.slice(0, 137)}...`;
+}
+
+function containsSensitiveRequest(command: string): boolean {
+  return /(secret|token|password|api key|raw secret|\.env|비밀번호|토큰|시크릿)/i.test(
+    command
+  );
 }
 
 function formatNextStep(result: PmPreflightResult): string {
