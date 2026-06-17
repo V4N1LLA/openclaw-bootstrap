@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc --noEmit",
+    "smoke:pm-dispatch": "tsc -p tsconfig.smoke.json && node .tmp-smoke/scripts/pmDispatchSmoke.js",
     "register-commands": "node --import tsx src/registerCommands.ts",
     "start": "node --import tsx src/index.ts"
   },
